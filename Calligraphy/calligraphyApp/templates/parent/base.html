@@ -1,0 +1,32 @@
+{% load static %}  
+<!-- base.html -->  
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>{% block title %}Calligraphy Courses{% endblock %}</title>  
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  
+</head>  
+<body>  
+    {% include 'parent/header.html' %}  
+            
+    <!-- Display messages -->  
+    {% if messages %}  
+        <div class="messages">  
+            {% for message in messages %}  
+                <div class="alert">{{ message }}</div>  
+            {% endfor %}  
+        </div>  
+    {% endif %}  
+
+    <main>  
+        {% block content %}  
+        {% endblock %}  
+    </main>  
+
+    <footer>  
+        <!-- Your footer content can go here -->  
+        <p>&copy; 2025 My Site. All rights reserved.</p>  
+    </footer>  
+</body>  
+</html>  

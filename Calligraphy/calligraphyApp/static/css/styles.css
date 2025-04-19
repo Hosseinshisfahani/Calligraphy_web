@@ -1,0 +1,113 @@
+/* static/css/styles.css */  
+
+/* Existing styles */  
+body {  
+    font-family: Arial, sans-serif;  
+    background-color: #f4f4f4;  
+    margin: 0;  
+    padding: 20px;  
+}  
+
+h1, h2, h3 {  
+    color: #333;  
+}  
+
+ul {  
+    list-style-type: none; /* Removes bullet points */  
+    padding: 0;  
+}  
+
+li {  
+    background: white;  
+    margin: 10px 0;  
+    padding: 15px;  
+    border-radius: 5px;  
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
+}  
+
+a {  
+    text-decoration: none;  
+    color: blue;  
+}  
+
+a:hover {  
+    text-decoration: underline; /* Underline links on hover */  
+}  
+
+/* New styles for part_detail */  
+.part-detail {  
+    max-width: 800px; /* Limit the width of the container */  
+    margin: auto; /* Center align the container */  
+    background: white; /* Background color for the part detail */  
+    padding: 20px; /* Inner padding for the container */  
+    border-radius: 8px; /* Rounded corners */  
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */  
+}  
+
+.part-detail h1 {  
+    font-size: 24px; /* Size of the main title */  
+    margin-bottom: 10px; /* Space below the main title */  
+}   
+
+.part-detail p {  
+    line-height: 1.6; /* Adds line height for readability */  
+    margin: 10px 0; /* Space above and below paragraphs */  
+}  
+
+.part-detail h3 {  
+    margin-top: 20px; /* Margin above subheadings */  
+}  
+
+.part-detail ul {  
+    margin-top: 10px; /* Margin above video list */  
+}  
+
+/* styles.css */  
+
+/* Basic reset for margin and padding */  
+* {  
+    margin: 0;  
+    padding: 0;  
+    box-sizing: border-box;  
+}  
+
+/* Style for the navigation bar */  
+nav {  
+    background-color: #333; /* Dark background */  
+    display: flex; /* Flexbox for horizontal layout */  
+    justify-content: space-between; /* Space between items */  
+    align-items: center; /* Center items vertically */  
+    padding: 15px 20px; /* Padding for top/bottom and left/right */  
+}  
+
+/* Link styles */  
+nav a {  
+    color: #ffffff; /* White text color */  
+    text-decoration: none; /* Remove underlines from links */  
+    padding: 10px 15px; /* Padding around links for better click area */  
+    border-radius: 5px; /* Rounded corners */  
+    transition: background-color 0.3s; /* Smooth background color transition */  
+}  
+
+/* Hover effect for links */  
+nav a:hover {  
+    background-color: #575757; /* Change background color on hover */  
+}  
+
+/* Specific styles for welcome message */  
+nav span {  
+    color: #ffffff; /* White text color for the welcome message */  
+    margin-right: 20px; /* Space between the welcome message and the links */  
+}  
+
+/* Additional responsive styles (optional) */  
+@media (max-width: 768px) {  
+    nav {  
+        flex-direction: column; /* Stack items vertically on smaller screens */  
+        align-items: flex-start; /* Align items to the start */  
+    }  
+
+    nav a {  
+        padding: 10px 20px; /* Adjust padding for smaller screens */  
+    }  
+}  

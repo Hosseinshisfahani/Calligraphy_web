@@ -1,0 +1,22 @@
+{% load static %}  
+
+
+<nav>  
+    <a href="{% url 'home' %}">Home</a>  
+    
+    {% if user.is_authenticated %}  
+
+        <span>{{ user.username }}!</span>
+
+        <a href="{% url 'profile' %}">Profile</a>  <!-- Link to the user's profile -->  
+
+       <!-- Logout form -->  
+       <form action="{% url 'logout' %}" method="post" style="display:inline;">  
+            {% csrf_token %}  
+            <button type="submit" style="background: none; border: none; color: white; cursor: pointer;">Logout</button>  
+       </form> 
+    {% else %}  
+        <a href="{% url 'login' %}">Login</a>  <!-- Link to login -->  
+        <a href="{% url 'register' %}">Register</a>  <!-- Link to register -->  
+    {% endif %}  
+</nav>  

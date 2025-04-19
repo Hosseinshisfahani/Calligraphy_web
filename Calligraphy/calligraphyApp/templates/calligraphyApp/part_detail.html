@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% extends 'parent/base.html' %}  
+{% load static %}  
+
+{% block content %}  <!-- Override the content block -->  
+<html lang="en">  
+
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>{{ part.title }}</title>  
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link to your CSS file -->  
+</head> 
+
+
+<body>  
+    <div class="part-detail"> <!-- Wrapper for styling -->  
+        <h1>Part: {{ part.title }}</h1>  
+        <p>Description: {{ part.description }}</p>  
+
+        <h3>Videos:</h3>  
+        <ul>  
+            {% if videos %}  
+                {% for video in videos %}  <!-- Changed 'part.videos.all' to use 'videos' passed to template -->  
+                    <li>  
+                        <video width="600" controls>  
+                            <source src="{{ video.video_file.url }}" type="video/mp4">  
+                            Your browser does not support the video tag.  
+                        </video>  
+                        <p>{{ video.title }}</p>  <!-- Add video title below the player -->  
+                    </li>  
+                {% endfor %}  
+            {% else %}  
+                <li>You must be logged in to view videos.</li>  
+            {% endif %}  
+        </ul>  
+
+        <a href="{% url 'home' %}">Back to Courses</a> <!-- Link back to home -->  
+    </div>  
+</body> 
+
+
+</html>  
+{% endblock %}  <!-- Override the content block -->  

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% extends 'parent/base.html' %}  
+
+{% load static %}  
+{% block content %}  <!-- Override the content block -->  
+
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Courses</title>  
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  
+</head>  
+<body>  
+    <h1>Available Courses</h1>  
+    <ul>  
+        {% for course in courses %}  
+            <li>  
+                <h2>{{ course.title }}</h2>  
+                <p>{{ course.description }}</p>  
+                <h3>Parts:</h3>  
+                <ul>  
+                    {% for part in course.parts.all %}  
+                        <li>  
+                            <a href="{% url 'part_detail' part.id %}">{{ part.title }}</a>  
+                        </li>  
+                    {% endfor %}  
+                </ul>  
+                <p>Created at: {{ course.created_at }}</p>  
+            </li>  
+        {% endfor %}  
+    </ul>  
+</body>  
+</html>  
+{% endblock %}  

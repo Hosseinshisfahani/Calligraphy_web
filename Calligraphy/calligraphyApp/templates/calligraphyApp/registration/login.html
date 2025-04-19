@@ -1,0 +1,44 @@
+<!-- registration/login.html -->  
+{% extends 'parent/base.html' %}  
+{% load static %}  
+
+{% block content %}  
+<h2>Login</h2>  
+<form method="post">  
+    {% csrf_token %}   
+
+    <!-- Display form fields with error handling -->  
+    <div>  
+        <label for="username">Username:</label>  
+        {{ form.username }}  
+        {% for error in form.username.errors %}  
+            <div class="error">{{ error }}</div>  
+        {% endfor %}  
+    </div>  
+
+    <div>  
+        <label for="password">Password:</label>  
+        {{ form.password }}  
+        {% for error in form.password.errors %}  
+            <div class="error">{{ error }}</div>  
+        {% endfor %}  
+    </div>  
+
+    <!-- Display non-field errors -->  
+    {% if form.non_field_errors %}  
+        <div class="error">{{ form.non_field_errors }}</div>  
+    {% endif %}  
+    
+    <button type="submit">Login</button>  
+</form>  
+
+<!-- Display success or error messages from the Django messages framework -->  
+{% if messages %}  
+    <div class="messages">  
+        {% for message in messages %}  
+            <div class="alert">{{ message }}</div>  
+        {% endfor %}  
+    </div>  
+{% endif %}  
+
+{% endblock %}  

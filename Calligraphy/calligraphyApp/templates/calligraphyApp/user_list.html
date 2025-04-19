@@ -1,0 +1,55 @@
+{% extends 'parent/base.html' %}  
+{% load static %}  <!-- Load static files if needed -->  
+
+{% block content %}  <!-- Override the content block -->  
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>User List</title>  
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link to your CSS file -->  
+</head>  
+<body>  
+    <header>  
+        <nav>  
+            <ul>  
+                <!-- Show either username or login link -->  
+                {% if user.is_authenticated %}  
+                    <li>Welcome, {{ user.username }}!</li>  
+                {% else %}  
+                    <li><a href="{% url 'login' %}">Login</a></li>  
+                {% endif %}  
+                <li><a href="{% url 'user_list' %}">Users</a></li> <!-- You can link to other pages here -->  
+            </ul>  
+        </nav>  
+    </header>  
+
+    <main>  
+        <h1>Registered Users</h1>  
+        <table>  
+            <thead>  
+                <tr>  
+                    <th>Username</th>  
+                    <th>Email</th>  
+                    <!-- Add other columns as needed -->  
+                </tr>  
+            </thead>  
+            <tbody>  
+                {% for user in users %}  
+                <tr>  
+                    <td>{{ user.username }}</td>  
+                    <td>{{ user.email }}</td>  
+                    <!-- Add other user details as needed -->  
+                </tr>  
+                {% empty %}  
+                <tr>  
+                    <td colspan="2">No users registered.</td>  
+                </tr>  
+                {% endfor %}  
+            </tbody>  
+        </table>  
+    </main>  
+</body>  
+</html>  
+{% endblock %}  <!-- Override the content block -->  
