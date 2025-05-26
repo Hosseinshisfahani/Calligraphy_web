@@ -1,0 +1,460 @@
+{% extends 'calligraphyApp/base.html' %}
+{% load static %}
+
+{% block title %}سبد خرید{% endblock %}
+
+{% block content %}
+<!-- Cart Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8">
+                <h1 class="page-title">سبد خرید</h1>
+                <p class="page-subtitle">دوره‌های انتخاب شده برای خرید</p>
+                <div class="pen-decoration">
+                    <i class="fas fa-feather-alt"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container cart-container">
+    <div class="row">
+        <!-- Cart Items -->
+        <div class="col-lg-8 mb-4">
+            <div class="content-box">
+                <h3 class="content-title">
+                    <i class="fas fa-shopping-cart ms-2"></i> اقلام سبد خرید
+                </h3>
+                
+                {% if cart_items %}
+                    <div class="cart-items">
+                        {% for item in cart_items %}
+                            <div class="cart-item">
+                                <div class="cart-item-image">
+                                                {% if item.course.thumbnail %}
+                                        <img src="{{ item.course.thumbnail.url }}" alt="{{ item.course.title }}">
+                                    {% else %}
+                                        <img src="{% static 'images/default-course.svg' %}" alt="{{ item.course.title }}">
+                                                {% endif %}
+                                </div>
+                                <div class="cart-item-details">
+                                    <h4 class="cart-item-title">{{ item.course.title }}</h4>
+                                    <p class="cart-item-description">{{ item.course.description|truncatechars:100 }}</p>
+                                    <div class="cart-item-meta">
+                                        <span class="cart-item-sections">
+                                            <i class="fas fa-layer-group"></i> {{ item.course.parts.count }} بخش
+                                        </span>
+                                        <span class="cart-item-videos">
+                                            <i class="fas fa-video"></i> {{ item.videos_count }} ویدیو
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="cart-item-price">
+                                    <span class="price-amount">{{ item.course.price }}</span>
+                                    <span class="price-currency">تومان</span>
+                                </div>
+                                <div class="cart-item-actions">
+                                    <form method="post" action="{% url 'calligraphyApp:remove_from_cart' item.course.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-remove">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                                    {% endfor %}
+                        </div>
+                    
+                    <div class="cart-actions">
+                        <a href="{% url 'calligraphyApp:course_list' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-right ms-2"></i> برگشت به صفحه اصلی
+                        </a>
+                        <form method="post" action="{% url 'calligraphyApp:clear_cart' %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="fas fa-trash ms-2"></i> خالی کردن سبد
+                            </button>
+                        </form>
+                    </div>
+                    
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3 class="empty-state-title">سبد خرید شما خالی است</h3>
+                        <p class="empty-state-text">از بین دوره‌های متنوع ما، دوره‌های مورد علاقه خود را انتخاب کنید و به سبد خرید اضافه نمایید.</p>
+                        <a href="{% url 'calligraphyApp:course_list' %}" class="btn btn-primary mt-3">
+                            <i class="fas fa-graduation-cap ms-2"></i> مشاهده دوره‌ها
+                            </a>
+                        </div>
+                    {% endif %}
+            </div>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="col-lg-4">
+            <div class="cart-sidebar">
+                <div class="order-summary">
+                    <h3 class="summary-title">خلاصه سفارش</h3>
+                    
+                    <div class="summary-row">
+                        <span class="summary-label">تعداد دوره‌ها:</span>
+                        <span class="summary-value">{{ cart_items|length }}</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span class="summary-label">قیمت کل:</span>
+                        <span class="summary-value">{{ total_price }} تومان</span>
+                </div>
+                    
+                    {% if discount %}
+                        <div class="summary-row discount-row">
+                            <span class="summary-label">تخفیف:</span>
+                            <span class="summary-value discount-value">{{ discount_amount }} تومان</span>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="summary-row total-row">
+                        <span class="summary-label">مبلغ قابل پرداخت:</span>
+                        <span class="summary-value">{{ final_price }} تومان</span>
+                        </div>
+                    
+                    {% if cart_items %}
+                        <a href="{% url 'calligraphyApp:payment_process' cart_items.0.course.id %}" class="btn btn-primary btn-lg btn-block mt-4">
+                            <i class="fas fa-credit-card ms-2"></i> تکمیل خرید
+                        </a>
+                    {% else %}
+                        <button class="btn btn-primary btn-lg btn-block mt-4" disabled>
+                            <i class="fas fa-credit-card ms-2"></i> تکمیل خرید
+                        </button>
+                    {% endif %}
+                </div>
+                
+                <div class="discount-card mt-4">
+                    <h4 class="discount-title">کد تخفیف</h4>
+                    <form method="post" action="{% url 'calligraphyApp:apply_discount' %}" class="discount-form">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" name="discount_code" class="form-control" placeholder="کد تخفیف خود را وارد کنید">
+                            <button type="submit" class="btn btn-gold">اعمال</button>
+                        </div>
+                    </form>
+                </div>
+                
+                {% if has_discount %}
+                    <div class="active-discount mt-3">
+                        <div class="discount-badge">
+                            <i class="fas fa-tag"></i> {{ discount_code }}
+                        </div>
+                        <form method="post" action="{% url 'calligraphyApp:remove_discount' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-link text-danger">حذف کد تخفیف</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .cart-container {
+        margin-bottom: 3rem;
+    }
+    
+    .content-box {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+    }
+    
+    .content-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        color: var(--primary-color);
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--secondary-color);
+    }
+    
+    .cart-items {
+        margin-bottom: 1.5rem;
+    }
+    
+    .cart-item {
+        display: flex;
+        align-items: center;
+        padding: 1.25rem;
+        border-bottom: 1px solid var(--secondary-color);
+        position: relative;
+    }
+    
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+    
+    .cart-item-image {
+        width: 120px;
+        margin-left: 1.5rem;
+    }
+    
+    .cart-item-image img {
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    
+    .cart-item-details {
+        flex: 1;
+    }
+    
+    .cart-item-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        color: var(--primary-color);
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .cart-item-description {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .cart-item-meta {
+        display: flex;
+        gap: 1.5rem;
+    }
+    
+    .cart-item-sections,
+    .cart-item-videos {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+    
+    .cart-item-sections i,
+    .cart-item-videos i {
+        margin-left: 0.3rem;
+        color: var(--accent-color);
+    }
+    
+    .cart-item-price {
+        margin: 0 1.5rem;
+        text-align: center;
+        white-space: nowrap;
+    }
+    
+    .price-amount {
+        display: block;
+        font-weight: 700;
+        color: var(--primary-color);
+        font-size: 1.2rem;
+    }
+    
+    .price-currency {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+    
+    .cart-item-actions {
+        margin-right: 1rem;
+    }
+    
+    .btn-remove {
+        background: none;
+        border: none;
+        color: #dc3545;
+        font-size: 1.2rem;
+        opacity: 0.7;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-remove:hover {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    
+    .cart-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px dashed var(--secondary-color);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1.5rem;
+    }
+    
+    .empty-state-icon {
+        font-size: 3rem;
+        color: var(--secondary-color);
+        margin-bottom: 1.5rem;
+    }
+    
+    .empty-state-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state-text {
+        color: var(--text-muted);
+        max-width: 500px;
+        margin: 0 auto 1.5rem;
+    }
+    
+    .cart-sidebar {
+        position: sticky;
+        top: 20px;
+    }
+    
+    .order-summary {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+    }
+    
+    .summary-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        color: var(--primary-color);
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--secondary-color);
+    }
+    
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding: 0.5rem 0;
+    }
+    
+    .summary-label {
+        color: var(--text-muted);
+    }
+    
+    .summary-value {
+        font-weight: 500;
+        color: var(--text-color);
+    }
+    
+    .discount-row {
+        padding: 0.5rem;
+        background-color: rgba(220, 53, 69, 0.1);
+        border-radius: 8px;
+    }
+    
+    .discount-value {
+        color: #dc3545;
+    }
+    
+    .total-row {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--secondary-color);
+    }
+    
+    .total-row .summary-label,
+    .total-row .summary-value {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--primary-color);
+    }
+    
+    .btn-block {
+        display: block;
+        width: 100%;
+    }
+    
+    .discount-card {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+    }
+    
+    .discount-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        color: var(--primary-color);
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .discount-form .input-group {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .active-discount {
+        background-color: var(--light-bg);
+        border-radius: 12px;
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    .discount-badge {
+        display: inline-block;
+        background-color: var(--accent-gold);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+        margin-bottom: 0.5rem;
+    }
+    
+    @media (max-width: 991px) {
+        .cart-sidebar {
+            position: static;
+            margin-top: 2rem;
+        }
+    }
+    
+    @media (max-width: 767px) {
+        .cart-item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .cart-item-image {
+            width: 100%;
+            margin-left: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .cart-item-image img {
+            height: 120px;
+            width: 100%;
+        }
+        
+        .cart-item-details {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        
+        .cart-item-price {
+            margin: 0 0 1rem 0;
+            text-align: left;
+        }
+        
+        .cart-item-actions {
+            margin-right: 0;
+            align-self: flex-end;
+        }
+    }
+</style>
+{% endblock %} 

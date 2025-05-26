@@ -1,0 +1,150 @@
+{% extends 'calligraphyApp/base.html' %}
+{% block title %}مدیریت پرداخت‌ها{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2>مدیریت پرداخت‌ها</h2>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'calligraphyApp:admin_dashboard' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-right ml-1"></i> بازگشت به داشبورد
+            </a>
+            <a href="{% url 'calligraphyApp:payment_debug' %}" class="btn btn-info">
+                <i class="fas fa-bug ml-1"></i> صفحه دیباگ
+            </a>
+        </div>
+    </div>
+    
+    <!-- Filter form (optional) -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">فیلتر پرداخت‌ها</h5>
+        </div>
+        <div class="card-body">
+            <form method="GET" class="row g-3">
+                <div class="col-md-3">
+                    <label for="status" class="form-label">وضعیت</label>
+                    <select name="status" id="status" class="form-select">
+                        <option value="">همه</option>
+                        <option value="pending" {% if request.GET.status == 'pending' %}selected{% endif %}>در انتظار تایید</option>
+                        <option value="approved" {% if request.GET.status == 'approved' %}selected{% endif %}>تایید شده</option>
+                        <option value="rejected" {% if request.GET.status == 'rejected' %}selected{% endif %}>رد شده</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="user" class="form-label">کاربر</label>
+                    <input type="text" name="user" id="user" class="form-control" value="{{ request.GET.user|default:'' }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="course" class="form-label">دوره</label>
+                    <input type="text" name="course" id="course" class="form-control" value="{{ request.GET.course|default:'' }}">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary mb-3">اعمال فیلتر</button>
+                    <a href="{% url 'calligraphyApp:admin_payment_list' %}" class="btn btn-outline-secondary mb-3 ms-2">حذف فیلتر</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Payments table -->
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">لیست پرداخت‌ها</h6>
+        </div>
+        <div class="card-body">
+            {% if payments %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>شناسه</th>
+                                <th>کاربر</th>
+                                <th>دوره</th>
+                                <th>مبلغ</th>
+                                <th>وضعیت</th>
+                                <th>تاریخ</th>
+                                <th>عملیات</th>
+                                <th>مشاهده دوره</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for payment in payments %}
+                            <tr>
+                                <td>{{ payment.id }}</td>
+                                <td>{{ payment.user.username }}</td>
+                                <td>{{ payment.course.title }}</td>
+                                <td>{{ payment.amount }} تومان</td>
+                                <td>
+                                    <span class="badge {% if payment.status == 'approved' %}bg-success{% elif payment.status == 'pending' %}bg-warning{% else %}bg-danger{% endif %}">
+                                        {{ payment.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>{{ payment.created_at|date:"Y/m/d H:i" }}</td>
+                                <td class="text-center">
+                                    <div class="action-buttons">
+                                        <a href="{% url 'calligraphyApp:admin_payment_detail' payment.id %}" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> مشاهده
+                                        </a>
+                                        <a href="{% url 'calligraphyApp:direct_payment_detail' payment.id %}" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-link"></i> لینک مستقیم
+                                        </a>
+                                        <form method="POST" action="{% url 'calligraphyApp:update_payment_status' payment.id %}" class="d-inline">
+                                            {% csrf_token %}
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <button type="submit" name="status" value="approved" class="btn btn-success">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button type="submit" name="status" value="rejected" class="btn btn-danger">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if payment.status == 'approved' %}
+                                        <a href="{% url 'calligraphyApp:course_detail' payment.course.id %}" class="btn btn-sm btn-success">
+                                            <i class="fas fa-graduation-cap"></i> مشاهده دوره
+                                        </a>
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> هیچ پرداختی یافت نشد.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+    }
+    .badge {
+        display: inline-block;
+        padding: 0.5em 0.75em;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+    }
+</style>
+{% endblock %} 

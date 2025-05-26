@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400px" height="400px" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(200, 200) scale(1.8) rotate(45)">
+    <!-- Feather Quill -->
+    <path d="M-60,-90 C-45,-75 -30,-60 -20,-40 C-15,-30 -10,-15 -10,0 C-10,15 -15,30 -20,45 L0,65 L20,45 C15,30 10,15 10,0 C10,-15 15,-30 20,-40 C30,-60 45,-75 60,-90 C40,-80 20,-70 0,-60 C-20,-70 -40,-80 -60,-90 Z" 
+          fill="none" stroke="#333" stroke-width="2"/>
+    
+    <!-- Feather details -->
+    <path d="M-30,-60 L-5,-30 M0,-60 L0,-25 M30,-60 L5,-30" 
+          fill="none" stroke="#333" stroke-width="1.5"/>
+    
+    <!-- Pen tip -->
+    <path d="M-10,45 L-15,60 L-5,70 L5,70 L15,60 L10,45 L0,65 Z" 
+          fill="#C5A05A" stroke="#333" stroke-width="1.5"/>
+    
+    <!-- Ink stain -->
+    <path d="M-15,60 L-25,80 C-25,90 -15,95 0,95 C15,95 25,90 25,80 L15,60" 
+          fill="#333" stroke="none"/>
+  </g>
+</svg> 

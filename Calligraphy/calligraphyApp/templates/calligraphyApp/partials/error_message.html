@@ -1,0 +1,23 @@
+{% if field.errors %}
+<div class="invalid-feedback d-block">
+    {% for error in field.errors %}
+        {% if "Enter a valid username" in error %}
+            نام کاربری معتبر وارد کنید. این مقدار فقط می‌تواند شامل حروف، اعداد و نویسه‌های @/./+/-/_ باشد.
+        {% elif "This field is required" in error %}
+            این فیلد الزامی است.
+        {% elif "This username is already taken" in error %}
+            این نام کاربری قبلاً گرفته شده است.
+        {% elif "This email address is already in use" in error %}
+            این آدرس ایمیل قبلاً استفاده شده است.
+        {% elif "The two password fields didn't match" in error %}
+            دو فیلد رمز عبور مطابقت ندارند.
+        {% elif "Your old password was entered incorrectly" in error %}
+            رمز عبور قدیمی شما اشتباه وارد شده است.
+        {% elif "Enter a valid email address" in error %}
+            یک آدرس ایمیل معتبر وارد کنید.
+        {% else %}
+            {{ error }}
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %} 

@@ -12,7 +12,7 @@ class PartInline(admin.TabularInline):
 @admin.register(Course)  
 class CourseAdmin(admin.ModelAdmin):  
     list_display = ('title', 'created_at')  
-    search_fields = ('title',)  
+    search_fields = ('title', 'description')  
     inlines = [PartInline]  # Allows editing of parts directly in the course admin  
 
 @admin.register(Part)  
@@ -23,6 +23,6 @@ class PartAdmin(admin.ModelAdmin):
 
 @admin.register(Video)  
 class VideoAdmin(admin.ModelAdmin):  
-    list_display = ('title', 'part', 'video_file', 'duration')  # Change 'url' to 'video_file'  
-    list_filter = ('part',)  
-    search_fields = ('title',)
+    list_display = ('title', 'part', 'duration', 'order')  
+    list_filter = ('part__course', 'part')  
+    search_fields = ('title', 'description')

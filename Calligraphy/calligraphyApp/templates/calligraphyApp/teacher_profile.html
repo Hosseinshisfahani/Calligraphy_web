@@ -1,0 +1,801 @@
+{% extends 'calligraphyApp/base.html' %}
+{% load static %}
+
+{% block title %}استاد {{ teacher.user.get_full_name }} | هنر خوشنویسی{% endblock %}
+
+{% block content %}
+<section class="teacher-certifications-top mt-4 mb-5">
+    <div class="container">
+        <h3 class="section-title mb-4 text-center"><i class="fas fa-certificate ms-2"></i> گواهینامه‌ها و مدارک استاد</h3>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4">
+                <div class="certification-card p-2 bg-white rounded shadow-sm h-100">
+                    <img src="{% static 'images/e2d0a8e6-9cd0-4ef2-8b10-fc95e3646fd2.jpeg' %}" alt="گواهینامه ۱" class="img-fluid rounded">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="certification-card p-2 bg-white rounded shadow-sm h-100">
+                    <img src="{% static 'images/4d366fa6-9a7a-4b1f-8acc-632a9137692c.jpeg' %}" alt="گواهینامه ۲" class="img-fluid rounded">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="certification-card p-2 bg-white rounded shadow-sm h-100">
+                    <img src="{% static 'images/59ba5153-5d70-4062-b16f-242ceaa90ec1.jpeg' %}" alt="گواهینامه ۳" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+            </div>
+</section>
+
+<section class="teacher-profile-section">
+    <div class="container py-5">
+        <!-- درباره استاد -->
+        <div class="about-teacher-section mt-5">
+            <div class="card about-card">
+                <div class="card-header about-card-header">
+                    <h2 class="about-title">
+                        <i class="fas fa-user-graduate me-2"></i>
+                        درباره استاد
+                    </h2>
+                </div>
+                <div class="card-body about-card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="about-description">
+                                <p>با بهره‌گیری از استعداد هنری خانوادگی، فعالیت خود را در زمینه خوشنویسی از دوران دبستان آغاز کردم. نخستین آموزش‌های رسمی را در دهه ۱۳۷۰ در کانون «اخلاق و اندیشه» زیر نظر استاد سلیمانی دریافت نمودم. پس از آن، مدتی نزد آقای محسن هادی‌پور به تمرین خوشنویسی پرداختم.</p>
+                                
+                                <p>پس از پایان خدمت سربازی، در سال ۱۳۷۷ به انجمن خوشنویسان اصفهان پیوستم و دوره‌های آموزشی را نزد اساتید برجسته‌ای چون مرحوم استاد معین‌الکتاب، استاد وکیلی و استاد فرزانه گذراندم. در این مسیر، موفق به دریافت مدارک ممتاز و فوق‌ممتاز شدم.</p>
+                                
+                                <p>نگاه من به خوشنویسی، با گذشت زمان، از فرم‌های ظاهری به ساختارهای درونی و زیبایی‌شناسی حروف نستعلیق تغییر یافت. نتیجه این نگاه، شکل‌گیری مفهومی به نام <strong>مهندسی خط</strong> بود که در آن به تحلیل ساختاری، ترکیب و حرکات درونی حروف پرداخته‌ام.</p>
+                                
+                                <p>در سال ۱۳۹۱ موفق به دریافت درجه فوق‌ممتاز و در سال ۱۴۰۰، مفتخر به دریافت درجه استادی از انجمن خوشنویسان ایران شدم.</p>
+                            </div>
+
+                            <div class="experience-section mt-4">
+                                <h3 class="experience-title"><i class="fas fa-briefcase me-2"></i> سوابق کاری</h3>
+                                <div class="timeline">
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker"></div>
+                                        <div class="timeline-content">
+                                            <h4 class="timeline-title">استاد خوشنویسی</h4>
+                                            <p class="timeline-organization">انجمن خوشنویسان ایران</p>
+                                            <span class="timeline-period">۱۴۰۰ تا کنون</span>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker"></div>
+                                        <div class="timeline-content">
+                                            <h4 class="timeline-title">خوشنویس فوق ممتاز</h4>
+                                            <p class="timeline-organization">انجمن خوشنویسان ایران</p>
+                                            <span class="timeline-period">۱۳۹۱ تا ۱۴۰۰</span>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker"></div>
+                                        <div class="timeline-content">
+                                            <h4 class="timeline-title">عضویت</h4>
+                                            <p class="timeline-organization">انجمن خوشنویسان اصفهان</p>
+                                            <span class="timeline-period">۱۳۷۷ تا کنون</span>
+                                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                        <div class="col-lg-4">
+                            <div class="social-media-section mt-4">
+                                <h3 class="social-media-title"><i class="fas fa-share-alt me-2"></i> شبکه‌های اجتماعی</h3>
+                                <div class="social-media-links">
+                                    <a href="https://instagram.com/khoshnevisi.graphic" target="_blank" class="social-media-link">
+                                        <i class="fab fa-instagram"></i>
+                                        <span>Instagram</span>
+                                    </a>
+                                    <a href="https://eitaa.com/khoshnevisigraphic" target="_blank" class="social-media-link">
+                                        <i class="fas fa-comment-dots"></i>
+                                        <span>Eitaa</span>
+                                    </a>
+                                    <a href="#" class="social-media-link">
+                                        <i class="fab fa-youtube"></i>
+                                        <span>YouTube</span>
+                                    </a>
+                        </div>
+                    </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Teacher Stats -->
+        <div class="teacher-stats-section mt-5">
+            <div class="row">
+            <div class="col-md-4 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <div class="stat-number">{{ teacher.courses.count }}</div>
+                        <div class="stat-title">دوره آموزشی</div>
+                    </div>
+                        </div>
+                <div class="col-md-4 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-number">{{ teacher.students_count }}</div>
+                        <div class="stat-title">هنرجو</div>
+                    </div>
+                        </div>
+                <div class="col-md-4 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-star"></i></div>
+                        <div class="stat-number">{{ teacher.avg_rating|floatformat:1 }}</div>
+                        <div class="stat-title">امتیاز</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Artistic Separator -->
+        <div class="artistic-separator">
+            <img src="{% static 'images/pen-separator.svg' %}" alt="جداکننده" class="separator-image">
+        </div>
+
+        <!-- Teacher Courses -->
+        <div class="courses-section mt-5">
+            <div class="section-header text-center">
+                <h2 class="section-title">دوره‌های آموزشی استاد</h2>
+                <p class="section-subtitle">یادگیری هنر خوشنویسی با روشی نوین و کاربردی</p>
+            </div>
+
+            <div class="row mt-5">
+                {% for course in teacher.courses.all %}
+            <div class="col-md-4 mb-4">
+                    <div class="course-card">
+                        <div class="course-image-wrapper">
+                            {% if course.image %}
+                                <img src="{{ course.image.url }}" alt="{{ course.title }}" class="course-image">
+                            {% else %}
+                                <img src="{% static 'images/default-course.svg' %}" alt="{{ course.title }}" class="course-image">
+                            {% endif %}
+                            <div class="course-level">{{ course.get_level_display }}</div>
+                        </div>
+                        <div class="course-content">
+                            <h3 class="course-title">{{ course.title }}</h3>
+                            <p class="course-description">{{ course.description|truncatechars:120 }}</p>
+                            <div class="course-meta">
+                                <div class="course-meta-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>{{ course.duration }} ساعت</span>
+                                </div>
+                                <div class="course-meta-item">
+                                    <i class="fas fa-list-ul"></i>
+                                    <span>{{ course.parts.count }} جلسه</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-price">
+                                {% if course.price == 0 %}
+                                    <span class="free-course">رایگان</span>
+                                {% else %}
+                                    <span class="price-amount">{{ course.price }} تومان</span>
+                                {% endif %}
+                    </div>
+                            <a href="{% url 'calligraphyApp:course_detail' course.id %}" class="course-link">
+                                <i class="fas fa-eye"></i> مشاهده دوره
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="empty-courses">
+                        <div class="empty-icon"><i class="fas fa-book"></i></div>
+                        <p>در حال حاضر دوره‌ای برای این استاد ثبت نشده است.</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Testimonials -->
+        <div class="testimonials-section mt-5">
+            <div class="artistic-separator">
+                <img src="{% static 'images/pen-separator.svg' %}" alt="جداکننده" class="separator-image">
+    </div>
+
+            <div class="section-header text-center mt-5">
+            <h2 class="section-title">نظرات هنرجویان</h2>
+                <p class="section-subtitle">آنچه هنرجویان درباره دوره‌های استاد می‌گویند</p>
+        </div>
+
+            <div class="row mt-5">
+                {% for testimonial in testimonials %}
+            <div class="col-md-4 mb-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="quote-icon"><i class="fas fa-quote-right"></i></div>
+                            <div class="testimonial-author">
+                                <h4>{{ testimonial.user.get_full_name }}</h4>
+                                <span>{{ testimonial.course.title }}</span>
+                            </div>
+                        </div>
+                        <div class="testimonial-content">
+                            <p>{{ testimonial.content }}</p>
+                        </div>
+                        <div class="testimonial-rating">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= testimonial.rating %}
+                                    <i class="fas fa-star"></i>
+                                {% else %}
+                                    <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="empty-testimonials">
+                        <div class="empty-icon"><i class="fas fa-comment"></i></div>
+                        <p>در حال حاضر نظری برای دوره‌های این استاد ثبت نشده است.</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact-section mt-5">
+            <div class="artistic-separator">
+                <img src="{% static 'images/pen-separator.svg' %}" alt="جداکننده" class="separator-image">
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-lg-6 mx-auto">
+                    <div class="contact-card">
+                        <h2 class="contact-title">ارتباط با استاد</h2>
+                        <p class="contact-description">برای کسب اطلاعات بیشتر درباره دوره‌های آموزشی و یا مشاوره، می‌توانید با استاد در ارتباط باشید.</p>
+                        
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>{{ teacher.user.email }}</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>{{ teacher.phone }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-action">
+                            <a href="#" class="contact-button">
+                                <i class="fas fa-paper-plane"></i> ارسال پیام
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .teacher-profile-section {
+        padding: 3rem 0;
+    }
+    
+    .teacher-header {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+        padding: 2.5rem;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--secondary-color);
+    }
+    
+    .teacher-image-container {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .teacher-image {
+        width: 280px;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 5px solid #fff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 1;
+    }
+    
+    .ink-splash-decoration {
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+        z-index: 0;
+    }
+    
+    .ink-splash {
+        width: 100px;
+        opacity: 0.7;
+    }
+    
+    .teacher-social {
+        margin-top: 1.5rem;
+    }
+    
+    .social-link {
+        display: inline-block;
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin: 0 0.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .social-link:hover {
+        color: var(--accent-gold);
+        transform: translateY(-3px);
+    }
+    
+    .teacher-name-badge {
+        margin-bottom: 1.5rem;
+    }
+    
+    .teacher-name {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 700;
+        font-size: 2.2rem;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .teacher-badge {
+        display: inline-block;
+        background-color: var(--accent-gold);
+        color: #fff;
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+    
+    .teacher-bio {
+        margin-bottom: 1.5rem;
+    }
+    
+    .bio-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .bio-title:after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        right: 0;
+        width: 50px;
+        height: 2px;
+        background-color: var(--accent-gold);
+    }
+    
+    .specialty-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        font-size: 1.25rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .specialty-title:after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        right: 0;
+        width: 30px;
+        height: 2px;
+        background-color: var(--accent-gold);
+    }
+    
+    .specialty-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .specialty-item {
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .specialty-item i {
+        color: var(--accent-gold);
+        margin-left: 0.75rem;
+        width: 20px;
+        text-align: center;
+    }
+    
+    .teacher-stats-section {
+        margin: 3rem 0;
+    }
+    
+    .stat-card {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        padding: 2rem 1rem;
+        text-align: center;
+        border: 1px solid var(--secondary-color);
+        transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat-icon {
+        font-size: 2.5rem;
+        color: var(--accent-gold);
+        margin-bottom: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-title {
+        font-size: 1rem;
+        color: var(--text-muted);
+    }
+    
+    .artistic-separator {
+        display: flex;
+        justify-content: center;
+        margin: 3rem 0;
+    }
+    
+    .separator-image {
+        height: 30px;
+        opacity: 0.8;
+    }
+    
+    .section-header {
+        margin-bottom: 2rem;
+    }
+    
+    .section-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        font-size: 1.75rem;
+        color: var(--primary-color);
+        margin-bottom: 0.75rem;
+    }
+    
+    .section-subtitle {
+        color: var(--text-muted);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .course-card {
+        background-color: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .course-card:hover {
+        transform: translateY(-7px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .course-image-wrapper {
+        position: relative;
+    }
+    
+    .course-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+    
+    .course-level {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+    }
+    
+    .course-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+    }
+    
+    .course-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: var(--primary-color);
+    }
+    
+    .course-description {
+        color: var(--text-color);
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .course-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-top: auto;
+    }
+    
+    .course-meta-item {
+        display: flex;
+        align-items: center;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+    
+    .course-meta-item i {
+        margin-left: 0.5rem;
+        color: var(--accent-gold);
+    }
+    
+    .course-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        border-top: 1px solid var(--secondary-color);
+        background-color: var(--light-bg);
+    }
+    
+    .course-price {
+        font-weight: 600;
+    }
+    
+    .free-course {
+        background-color: var(--success-color);
+        color: #fff;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+    
+    .price-amount {
+        color: var(--accent-gold);
+    }
+    
+    .course-link {
+        display: inline-block;
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .course-link:hover {
+        color: var(--accent-gold);
+    }
+    
+    .course-link i {
+        margin-left: 0.5rem;
+    }
+    
+    .empty-courses, .empty-testimonials {
+        text-align: center;
+        padding: 3rem;
+        background-color: #fff;
+        border-radius: 15px;
+        border: 1px dashed var(--secondary-color);
+    }
+    
+    .empty-icon {
+        font-size: 3rem;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+    }
+    
+    .testimonial-card {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+        height: 100%;
+        transition: all 0.3s ease;
+        border: 1px solid var(--secondary-color);
+    }
+    
+    .testimonial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .testimonial-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .quote-icon {
+        font-size: 2rem;
+        color: var(--accent-gold);
+        margin-left: 1rem;
+    }
+    
+    .testimonial-author h4 {
+        font-weight: 600;
+        margin: 0;
+        font-size: 1.1rem;
+        color: var(--primary-color);
+    }
+    
+    .testimonial-author span {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+    
+    .testimonial-content {
+        margin-bottom: 1rem;
+        color: var(--text-color);
+    }
+    
+    .testimonial-rating {
+        color: var(--accent-gold);
+    }
+    
+    .contact-card {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+        padding: 2.5rem;
+        text-align: center;
+        border: 1px solid var(--secondary-color);
+    }
+    
+    .contact-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        font-size: 1.75rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .contact-description {
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+    }
+    
+    .contact-info {
+        margin-bottom: 2rem;
+    }
+    
+    .contact-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    .contact-item i {
+        font-size: 1.2rem;
+        color: var(--accent-gold);
+        margin-left: 1rem;
+        width: 24px;
+    }
+    
+    .contact-button {
+        display: inline-block;
+        background-color: var(--primary-color);
+        color: #fff;
+        padding: 0.75rem 2rem;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .contact-button:hover {
+        background-color: var(--accent-gold);
+        color: #fff;
+        transform: translateY(-3px);
+    }
+    
+    .contact-button i {
+        margin-left: 0.5rem;
+    }
+    
+    @media (max-width: 991.98px) {
+        .teacher-image {
+            width: 220px;
+            height: 220px;
+        }
+        
+        .teacher-header {
+            text-align: center;
+        }
+        
+        .bio-title:after, .specialty-title:after {
+            right: 50%;
+            transform: translateX(50%);
+        }
+    }
+    
+    @media (max-width: 767.98px) {
+        .teacher-header {
+            padding: 1.5rem;
+        }
+        
+        .teacher-image {
+            width: 180px;
+            height: 180px;
+        }
+        
+        .teacher-name {
+            font-size: 1.8rem;
+        }
+        
+        .ink-splash {
+            width: 80px;
+        }
+    }
+    
+    .social-media-title {
+        font-size: 1.2rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .social-media-links {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .social-media-link {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        background-color: #f8f5f0;
+        border-radius: 30px;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .social-media-link:hover {
+        background-color: var(--accent-gold);
+        color: white;
+        transform: translateX(-5px);
+    }
+    
+    .social-media-link i {
+        font-size: 1.2rem;
+        margin-left: 10px;
+    }
+</style>
+{% endblock %} 

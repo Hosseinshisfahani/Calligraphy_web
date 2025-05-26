@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="200px" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(100, 100)">
+    <!-- Main ink splash -->
+    <path d="M20,-80 C50,-70 80,-40 80,-10 C80,10 70,30 50,40 
+             C60,50 60,70 40,80 C20,90 -10,90 -30,80 
+             C-50,90 -70,80 -80,60 C-90,40 -80,20 -70,10 
+             C-80,-10 -70,-40 -50,-60 C-30,-80 0,-80 20,-80 Z" 
+          fill="#333333" opacity="0.9"/>
+    
+    <!-- Small splash 1 -->
+    <path d="M55,-40 C60,-35 65,-25 60,-15 C55,-5 45,-5 40,-10 C35,-15 35,-25 40,-35 C45,-40 50,-45 55,-40 Z" 
+          fill="#333333" opacity="0.7"/>
+    
+    <!-- Small splash 2 -->
+    <path d="M-70,-20 C-65,-15 -65,-5 -70,5 C-75,15 -85,15 -90,5 C-95,-5 -90,-15 -85,-20 C-80,-25 -75,-25 -70,-20 Z" 
+          fill="#333333" opacity="0.6"/>
+    
+    <!-- Small droplets -->
+    <circle cx="60" cy="20" r="6" fill="#333333" opacity="0.8"/>
+    <circle cx="-30" cy="-50" r="8" fill="#333333" opacity="0.7"/>
+    <circle cx="-55" cy="40" r="5" fill="#333333" opacity="0.6"/>
+    <circle cx="30" cy="60" r="4" fill="#333333" opacity="0.5"/>
+    <circle cx="-10" cy="70" r="3" fill="#333333" opacity="0.4"/>
+  </g>
+</svg> 

@@ -1,0 +1,285 @@
+{% extends 'calligraphyApp/base.html' %}
+{% load static %}
+
+{% block title %}{{ video.title }}{% endblock %}
+
+{% block extra_css %}
+<!-- Plyr CSS (local, app-level) -->
+<link rel="stylesheet" href="{% static 'plyr.css' %}">
+<style>
+    .video-page-section {
+        padding: 3rem 0;
+    }
+    
+    .video-card {
+        border-radius: 15px;
+        overflow: hidden;
+        background-color: #fff;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--secondary-color);
+    }
+    
+    .video-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--secondary-color);
+    }
+    
+    .video-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin: 0;
+    }
+    
+    .back-to-course {
+        display: inline-flex;
+        align-items: center;
+        background-color: var(--light-bg);
+        color: var(--primary-color);
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .back-to-course:hover {
+        background-color: var(--primary-color);
+        color: #fff;
+    }
+    
+    .back-to-course i {
+        margin-left: 0.5rem;
+    }
+    
+    .video-content {
+        padding: 1.5rem;
+    }
+    
+    .video-container {
+        background-color: #000;
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        aspect-ratio: 16/9;
+    }
+    
+    .plyr {
+        --plyr-color-main: var(--primary-color);
+        --plyr-video-background: #000;
+        --plyr-menu-background: rgba(255, 255, 255, 0.9);
+        --plyr-menu-color: var(--text-color);
+        --plyr-tooltip-background: rgba(255, 255, 255, 0.9);
+        --plyr-tooltip-color: var(--text-color);
+        --plyr-range-track-height: 6px;
+        --plyr-range-thumb-height: 12px;
+        --plyr-range-thumb-background: var(--primary-color);
+        --plyr-control-icon-size: 18px;
+        --plyr-control-spacing: 10px;
+        --plyr-control-radius: 4px;
+        --plyr-video-controls-background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.7));
+    }
+    
+    .plyr--video {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .plyr--full-ui input[type=range] {
+        color: var(--primary-color);
+    }
+    
+    .plyr__control--overlaid {
+        background: var(--primary-color);
+    }
+    
+    .plyr__control:hover {
+        background: var(--accent-color);
+    }
+    
+    .plyr__control.plyr__tab-focus,
+    .plyr__control:hover,
+    .plyr__control[aria-expanded=true] {
+        background: var(--accent-color);
+    }
+    
+    .plyr__menu__container {
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .video-footer {
+        padding: 1.5rem;
+        border-top: 1px solid var(--secondary-color);
+        background-color: var(--light-bg);
+    }
+    
+    .video-description-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .video-description-title:after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        right: 0;
+        width: 40px;
+        height: 2px;
+        background-color: var(--accent-gold);
+    }
+    
+    .video-meta {
+        display: flex;
+        align-items: center;
+        margin-top: 1.5rem;
+        color: var(--text-muted);
+    }
+    
+    .video-meta i {
+        margin-left: 0.5rem;
+        color: var(--accent-gold);
+    }
+    
+    @media (max-width: 767.98px) {
+        .video-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .back-to-course {
+            margin-top: 1rem;
+        }
+        
+        .video-title {
+            font-size: 1.3rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="video-page-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="video-card">
+                    <div class="video-header">
+                        <h1 class="video-title">{{ video.title }}</h1>
+                        <a href="{% url 'calligraphyApp:course_detail' video.part.course.id %}" class="back-to-course">
+                            <i class="fas fa-chevron-right"></i> بازگشت به دوره
+                        </a>
+                    </div>
+                    <div class="video-content">
+                        <div class="video-container" id="video-container">
+                            <video 
+                                id="player" 
+                                class="player-video"
+                                playsinline 
+                                controls
+                                crossorigin
+                                controlsList="nodownload"
+                                {% if video.thumbnail %}poster="{{ video.thumbnail.url }}"{% endif %}
+                            >
+                                <source src="{% url 'calligraphyApp:protected_video' video.id %}?quality=high" type="video/mp4" size="1080">
+                                <source src="{% url 'calligraphyApp:protected_video' video.id %}?quality=medium" type="video/mp4" size="720">
+                                <source src="{% url 'calligraphyApp:protected_video' video.id %}?quality=low" type="video/mp4" size="480">
+                                مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+                            </video>
+                        </div>
+                    </div>
+                    <div class="video-footer">
+                        <h2 class="video-description-title">توضیحات</h2>
+                        <p>{{ video.description|linebreaks }}</p>
+                        <div class="video-meta">
+                            <i class="fas fa-clock"></i>
+                            <span>مدت زمان: {{ video.duration }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if video.part.course.parts.count > 1 %}
+                <div class="navigation-buttons mt-4">
+                    <div class="row">
+                        {% if prev_video %}
+                        <div class="col-6">
+                            <a href="{% url 'calligraphyApp:video_detail' prev_video.id %}" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-arrow-right ms-2"></i> ویدیو قبلی
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        {% if next_video %}
+                        <div class="col-6">
+                            <a href="{% url 'calligraphyApp:video_detail' next_video.id %}" class="btn btn-primary w-100">
+                                ویدیو بعدی <i class="fas fa-arrow-left ms-2"></i>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>console.log('EXTRA JS BLOCK IS WORKING');</script>
+<script src="{% static 'plyr.polyfilled.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const player = new Plyr('#player', {
+        controls: [
+            'play-large',
+            'play',
+            'progress',
+            'current-time',
+            'mute',
+            'volume',
+            'settings',
+            'fullscreen'
+        ],
+        settings: ['speed'],
+        tooltips: {
+            controls: true,
+            seek: true
+        },
+        keyboard: {
+            focused: true,
+            global: true
+        },
+        fullscreen: {
+            enabled: true,
+            fallback: true,
+            iosNative: true
+        }
+    });
+
+    // Prevent right-click
+    document.getElementById('player').addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // Prevent keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && (e.key === 's' || e.key === 'S')) {
+            e.preventDefault();
+        }
+    });
+});
+</script>
+{% endblock %} 

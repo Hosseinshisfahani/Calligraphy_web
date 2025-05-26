@@ -1,22 +1,81 @@
-{% load static %}  
+{% load static %}
 
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'calligraphyApp:home' %}">خوشنویسی</a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-<nav>  
-    <a href="{% url 'home' %}">Home</a>  
-    
-    {% if user.is_authenticated %}  
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'calligraphyApp:home' %}">صفحه اصلی</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'calligraphyApp:course_list' %}">دوره‌ها</a>
+                </li>
+            </ul>
+            
+            <ul class="navbar-nav auth-buttons">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link auth-btn" href="{% url 'calligraphyApp:profile' %}">پروفایل</a>
+                    </li>
+                    <li class="nav-item">
+                        <form action="{% url 'calligraphyApp:logout' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-link auth-btn border-0 bg-transparent">خروج</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link auth-btn" href="{% url 'calligraphyApp:register' %}">ثبت نام</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link auth-btn" href="{% url 'calligraphyApp:login' %}">ورود</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
 
-        <span>{{ user.username }}!</span>
+<!-- Add Bootstrap CSS and JS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        <a href="{% url 'profile' %}">Profile</a>  <!-- Link to the user's profile -->  
+<!-- Add RTL support for Bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
 
-       <!-- Logout form -->  
-       <form action="{% url 'logout' %}" method="post" style="display:inline;">  
-            {% csrf_token %}  
-            <button type="submit" style="background: none; border: none; color: white; cursor: pointer;">Logout</button>  
-       </form> 
-    {% else %}  
-        <a href="{% url 'login' %}">Login</a>  <!-- Link to login -->  
-        <a href="{% url 'register' %}">Register</a>  <!-- Link to register -->  
-    {% endif %}  
-</nav>  
+<!-- Custom styles -->
+<style>
+    .navbar {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .auth-buttons {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    .auth-btn {
+        color: #6c757d !important;
+        font-weight: 500;
+        padding: 8px 16px !important;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+    .auth-btn:hover {
+        background-color: #e9ecef;
+        color: #495057 !important;
+    }
+    .navbar-brand {
+        font-size: 1.5rem;
+        color: #495057;
+    }
+    .nav-link {
+        color: #6c757d;
+        margin: 0 5px;
+    }
+</style>  

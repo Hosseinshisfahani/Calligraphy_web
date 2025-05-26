@@ -1,0 +1,167 @@
+{% extends 'calligraphyApp/base.html' %}
+{% load static %}
+
+{% block title %}ثبت نام{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h3>ثبت نام</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            {{ form.username.label_tag }}
+                            {{ form.username }}
+                            {% with field=form.username %}
+                                {% include 'calligraphyApp/partials/error_message.html' %}
+                            {% endwith %}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.email.label_tag }}
+                            {{ form.email }}
+                            {% with field=form.email %}
+                                {% include 'calligraphyApp/partials/error_message.html' %}
+                            {% endwith %}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.phone.label_tag }}
+                            {{ form.phone }}
+                            {% with field=form.phone %}
+                                {% include 'calligraphyApp/partials/error_message.html' %}
+                            {% endwith %}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.password.label_tag }}
+                            {{ form.password }}
+                            {% with field=form.password %}
+                                {% include 'calligraphyApp/partials/error_message.html' %}
+                            {% endwith %}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.password2.label_tag }}
+                            {{ form.password2 }}
+                            {% with field=form.password2 %}
+                                {% include 'calligraphyApp/partials/error_message.html' %}
+                            {% endwith %}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.level.label_tag }}
+                            {{ form.level }}
+                            {% with field=form.level %}
+                                {% include 'calligraphyApp/partials/error_message.html' %}
+                            {% endwith %}
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">ثبت نام</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-section {
+        padding: 4rem 0;
+    }
+    
+    .auth-container {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+        padding: 2.5rem;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--secondary-color);
+    }
+    
+    .auth-decoration {
+        position: absolute;
+        top: -30px;
+        right: -30px;
+        width: 100px;
+        height: 100px;
+        opacity: 0.15;
+        transform: rotate(-15deg);
+        pointer-events: none;
+    }
+    
+    .auth-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    
+    .auth-title:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+    }
+    
+    .auth-form .form-label {
+        color: var(--text-color);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+    
+    .auth-form .input-group-text {
+        background-color: var(--light-bg);
+        border-color: var(--secondary-color);
+        color: var(--primary-color);
+    }
+    
+    .auth-form .form-control {
+        border-color: var(--secondary-color);
+        padding: 0.75rem 1rem;
+    }
+    
+    .auth-form .form-control:focus {
+        border-color: var(--accent-gold);
+        box-shadow: 0 0 0 0.25rem rgba(197, 160, 90, 0.25);
+    }
+    
+    .auth-links {
+        margin-top: 2rem;
+    }
+    
+    .auth-divider {
+        position: relative;
+        text-align: center;
+        margin: 1.5rem 0;
+    }
+    
+    .auth-divider:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background-color: var(--secondary-color);
+    }
+    
+    .auth-divider span {
+        position: relative;
+        display: inline-block;
+        padding: 0 1rem;
+        background-color: #fff;
+        color: var(--text-muted);
+    }
+</style>
+{% endblock %} 

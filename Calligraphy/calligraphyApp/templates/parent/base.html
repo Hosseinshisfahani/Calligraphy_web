@@ -1,32 +1,127 @@
 {% load static %}  
 <!-- base.html -->  
 <!DOCTYPE html>  
-<html lang="en">  
+<html lang="fa" dir="rtl">  
 <head>  
     <meta charset="UTF-8">  
-    <title>{% block title %}Calligraphy Courses{% endblock %}</title>  
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}هنر خوشنویسی{% endblock %}</title>  
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <!-- Bootstrap RTL CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/calligraphy-theme.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>  
 <body>  
-    {% include 'parent/header.html' %}  
+    <!-- Header with calligraphy-inspired design -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'calligraphyApp:course_list' %}">
+                    <i class="fas fa-feather-alt me-2"></i>هنر خوشنویسی
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'course_list' %}active{% endif %}" href="{% url 'calligraphyApp:course_list' %}">
+                                <i class="fas fa-book me-1"></i>دوره‌های آموزشی
+                            </a>
+                        </li>
+                        <li class="nav-item">
+               +             <a class="nav-link {% if request.resolver_match.url_name == 'teacher_profile' %}active{% endif %}" href="{% url 'calligraphyApp:teacher_profile' %}">
+                                <i class="fas fa-user-tie me-1"></i>استاد حمیدرضا توکلی
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-info-circle me-1"></i>درباره ما
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-phone me-1"></i>تماس با ما
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="d-flex auth-buttons">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'calligraphyApp:profile' %}" class="btn btn-primary me-2">
+                                <i class="fas fa-user-circle me-1"></i>پروفایل
+                            </a>
+                            <a href="{% url 'calligraphyApp:cart' %}" class="btn btn-outline-light me-2">
+                                <i class="fas fa-shopping-cart me-1"></i>سبد خرید
+                            </a>
+                            <a href="{% url 'calligraphyApp:logout' %}" class="btn btn-outline-light">
+                                <i class="fas fa-sign-out-alt me-1"></i>خروج
+                            </a>
+                        {% else %}
+                            <a href="{% url 'calligraphyApp:login' %}" class="btn btn-outline-light me-2">
+                                <i class="fas fa-sign-in-alt me-1"></i>ورود
+                            </a>
+                            <a href="{% url 'calligraphyApp:register' %}" class="btn btn-secondary">
+                                <i class="fas fa-user-plus me-1"></i>ثبت نام
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
             
     <!-- Display messages -->  
     {% if messages %}  
-        <div class="messages">  
+        <div class="messages container mt-3">  
             {% for message in messages %}  
-                <div class="alert">{{ message }}</div>  
+                <div class="alert alert-{{ message.tags }} border-calligraphy">{{ message }}</div>  
             {% endfor %}  
         </div>  
     {% endif %}  
 
-    <main>  
-        {% block content %}  
-        {% endblock %}  
+    <!-- Main content with ink splash decoration -->
+    <main class="position-relative py-4">
+        <div class="ink-splash" style="top: 5%; right: 5%;"></div>
+        <div class="ink-splash" style="bottom: 10%; left: 8%;"></div>
+        
+        <div class="container">
+            {% block content %}  
+            {% endblock %}
+        </div>
     </main>  
 
-    <footer>  
-        <!-- Your footer content can go here -->  
-        <p>&copy; 2025 My Site. All rights reserved.</p>  
-    </footer>  
+    <footer class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <h5 class="text-light mb-3">هنر خوشنویسی</h5>
+                    <p class="text-light-text">آموزش هنر زیبای خوشنویسی به صورت آنلاین با اساتید مجرب</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <h5 class="text-light mb-3">ارتباط با ما</h5>
+                    <div class="d-flex justify-content-center justify-content-md-end">
+                        <a href="#" class="text-light-text me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-light-text me-3"><i class="fab fa-telegram fa-lg"></i></a>
+                        <a href="#" class="text-light-text"><i class="fas fa-envelope fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-4 mb-4" style="border-color: var(--secondary-color); opacity: 0.2;">
+            <div class="text-center">
+                <p class="text-light-text">&copy; 2025 هنر خوشنویسی. تمامی حقوق محفوظ است.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
 </body>  
 </html>  

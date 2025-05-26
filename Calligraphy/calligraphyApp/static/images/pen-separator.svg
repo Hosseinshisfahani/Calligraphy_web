@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600px" height="60px" viewBox="0 0 600 60" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <!-- Left line -->
+    <path d="M50,30 L225,30" stroke="#C5A05A" stroke-width="2" stroke-dasharray="1,3"/>
+    
+    <!-- Right line -->
+    <path d="M375,30 L550,30" stroke="#C5A05A" stroke-width="2" stroke-dasharray="1,3"/>
+    
+    <!-- Center decoration -->
+    <g transform="translate(300, 30)">
+      <!-- Pen -->
+      <path d="M-40,0 L40,0" stroke="#583E23" stroke-width="3"/>
+      <path d="M-40,-5 L-30,0 L-40,5 Z" fill="#583E23"/>
+      <path d="M40,-5 L30,0 L40,5 Z" fill="#583E23"/>
+      
+      <!-- Dot decorations -->
+      <circle cx="-60" cy="0" r="3" fill="#C5A05A"/>
+      <circle cx="60" cy="0" r="3" fill="#C5A05A"/>
+      
+      <!-- Small ink splatter -->
+      <path d="M0,-10 C5,-8 8,-5 10,0 C8,5 5,8 0,10 C-5,8 -8,5 -10,0 C-8,-5 -5,-8 0,-10 Z" 
+            fill="#C5A05A" opacity="0.7"/>
+    </g>
+  </g>
+</svg> 

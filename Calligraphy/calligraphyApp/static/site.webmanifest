@@ -1,0 +1,22 @@
+{
+  "name": "هنر خوشنویسی",
+  "short_name": "خوشنویسی",
+  "icons": [
+    {
+      "src": "/static/images/favicon.ico",
+      "sizes": "64x64 32x32 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/static/images/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#3D2E18",
+  "background_color": "#f8f5f0",
+  "display": "standalone",
+  "start_url": "/",
+  "dir": "rtl",
+  "lang": "fa"
+} 

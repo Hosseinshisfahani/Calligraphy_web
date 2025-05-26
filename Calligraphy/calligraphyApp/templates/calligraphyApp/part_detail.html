@@ -1,44 +1,338 @@
-<!DOCTYPE html>
-{% extends 'parent/base.html' %}  
-{% load static %}  
+{% extends 'calligraphyApp/base.html' %}
+{% load static %}
 
-{% block content %}  <!-- Override the content block -->  
-<html lang="en">  
+{% block title %}{{ part.title }} - {{ part.course.title }}{% endblock %}
 
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>{{ part.title }}</title>  
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link to your CSS file -->  
-</head> 
+{% block content %}
+<section class="part-detail-section py-5">
+    <div class="container">
+        <div class="breadcrumb-container mb-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'calligraphyApp:course_list' %}">دوره‌ها</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'calligraphyApp:course_detail' part.course.id %}">{{ part.course.title }}</a></li>
+                    <li class="breadcrumb-item active">{{ part.title }}</li>
+                </ol>
+            </nav>
+        </div>
 
+        <div class="part-header">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="part-title">{{ part.title }}</h1>
+                    <div class="part-description">
+                        <p>{{ part.description }}</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center text-lg-end">
+                    <a href="{% url 'calligraphyApp:course_detail' part.course.id %}" class="back-to-course-btn">
+                        <i class="fas fa-chevron-right ms-2"></i> بازگشت به دوره
+                    </a>
+                </div>
+            </div>
+        </div>
 
-<body>  
-    <div class="part-detail"> <!-- Wrapper for styling -->  
-        <h1>Part: {{ part.title }}</h1>  
-        <p>Description: {{ part.description }}</p>  
+        <div class="part-videos-section mt-5">
+            <div class="section-title-container mb-4">
+                <h2 class="section-title">ویدیوهای این بخش</h2>
+                <div class="section-decoration">
+                    <img src="{% static 'images/pen-separator.svg' %}" alt="جداکننده" class="separator-image">
+                </div>
+            </div>
+            
+            <div class="row">
+                {% for video in videos %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            {% if video.thumbnail %}
+                                <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}">
+                            {% else %}
+                                <img src="{% static 'images/default-thumbnail.jpg' %}" alt="{{ video.title }}">
+                            {% endif %}
+                            <div class="duration-badge">
+                                <i class="fas fa-clock"></i> {{ video.duration }}
+                            </div>
+                            <div class="play-overlay">
+                                <div class="play-icon">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="video-content">
+                            <h3 class="video-title">{{ video.title }}</h3>
+                            <p class="video-description">{{ video.description|truncatechars:80 }}</p>
+                            <a href="{% url 'calligraphyApp:video_detail' video.id %}" class="watch-video-btn">
+                                <i class="fas fa-play-circle ms-2"></i> مشاهده ویدیو
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="empty-videos">
+                        <div class="empty-icon"><i class="fas fa-video"></i></div>
+                        <p>در حال حاضر ویدیویی برای این بخش ثبت نشده است.</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
 
-        <h3>Videos:</h3>  
-        <ul>  
-            {% if videos %}  
-                {% for video in videos %}  <!-- Changed 'part.videos.all' to use 'videos' passed to template -->  
-                    <li>  
-                        <video width="600" controls>  
-                            <source src="{{ video.video_file.url }}" type="video/mp4">  
-                            Your browser does not support the video tag.  
-                        </video>  
-                        <p>{{ video.title }}</p>  <!-- Add video title below the player -->  
-                    </li>  
-                {% endfor %}  
-            {% else %}  
-                <li>You must be logged in to view videos.</li>  
-            {% endif %}  
-        </ul>  
-
-        <a href="{% url 'home' %}">Back to Courses</a> <!-- Link back to home -->  
-    </div>  
-</body> 
-
-
-</html>  
-{% endblock %}  <!-- Override the content block -->  
+{% block extra_css %}
+<style>
+    .part-detail-section {
+        padding: 3rem 0;
+    }
+    
+    .breadcrumb-container {
+        background-color: #fff;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .breadcrumb-item a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: var(--accent-gold);
+    }
+    
+    .breadcrumb-item.active {
+        color: var(--text-muted);
+    }
+    
+    .breadcrumb-item + .breadcrumb-item::before {
+        color: var(--text-muted);
+    }
+    
+    .part-header {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--secondary-color);
+    }
+    
+    .part-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        font-size: 1.8rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        position: relative;
+    }
+    
+    .part-description {
+        color: var(--text-color);
+    }
+    
+    .back-to-course-btn {
+        display: inline-flex;
+        align-items: center;
+        background-color: var(--light-bg);
+        color: var(--primary-color);
+        padding: 0.5rem 1.5rem;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: 1px solid var(--secondary-color);
+    }
+    
+    .back-to-course-btn:hover {
+        background-color: var(--primary-color);
+        color: #fff;
+        border-color: var(--primary-color);
+    }
+    
+    .section-title-container {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .section-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        font-size: 1.75rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .section-decoration {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    .separator-image {
+        height: 30px;
+        opacity: 0.7;
+    }
+    
+    .video-card {
+        background-color: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--secondary-color);
+    }
+    
+    .video-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .video-thumbnail {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .video-thumbnail img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .video-card:hover .video-thumbnail img {
+        transform: scale(1.05);
+    }
+    
+    .duration-badge {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        z-index: 2;
+    }
+    
+    .play-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1;
+    }
+    
+    .video-card:hover .play-overlay {
+        opacity: 1;
+    }
+    
+    .play-icon {
+        width: 60px;
+        height: 60px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: scale(0.8);
+        transition: transform 0.3s ease;
+    }
+    
+    .video-card:hover .play-icon {
+        transform: scale(1);
+    }
+    
+    .play-icon i {
+        color: var(--accent-gold);
+        font-size: 1.5rem;
+        margin-left: 0.25rem; /* Adjust for the play icon */
+    }
+    
+    .video-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .video-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        font-size: 1.2rem;
+        margin-bottom: 0.75rem;
+        color: var(--primary-color);
+    }
+    
+    .video-description {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+    }
+    
+    .watch-video-btn {
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        color: var(--primary-color);
+        font-weight: 500;
+        transition: color 0.3s ease;
+        text-decoration: none;
+    }
+    
+    .watch-video-btn:hover {
+        color: var(--accent-gold);
+    }
+    
+    .watch-video-btn i {
+        font-size: 1.2rem;
+    }
+    
+    .empty-videos {
+        text-align: center;
+        padding: 3rem;
+        background-color: #fff;
+        border-radius: 15px;
+        border: 1px dashed var(--secondary-color);
+    }
+    
+    .empty-icon {
+        font-size: 3rem;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+    }
+    
+    @media (max-width: 991.98px) {
+        .part-header {
+            text-align: center;
+        }
+        
+        .back-to-course-btn {
+            margin-top: 1rem;
+        }
+    }
+    
+    @media (max-width: 767.98px) {
+        .part-title {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,193 @@
+{% extends 'calligraphyApp/base.html' %}
+{% load static %}
+
+{% block title %}ورود به حساب کاربری{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="auth-container">
+                    <div class="auth-decoration">
+                        <img src="{% static 'images/feather-pen.svg' %}" alt="قلم خوشنویسی">
+                    </div>
+                    
+                    <h2 class="auth-title">ورود به حساب کاربری</h2>
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post" action="{% url 'calligraphyApp:login' %}" class="auth-form">
+                        {% csrf_token %}
+                        
+                        <div class="form-group mb-3">
+                            <label for="username" class="form-label">نام کاربری یا ایمیل</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" name="username" id="username" class="form-control" placeholder="نام کاربری یا ایمیل خود را وارد کنید" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <label for="password" class="form-label">رمز عبور</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" name="password" id="password" class="form-control" placeholder="رمز عبور خود را وارد کنید" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" name="remember_me" id="remember_me">
+                            <label class="form-check-label" for="remember_me">
+                                مرا به خاطر بسپار
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt ms-2"></i> ورود
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="auth-links">
+                        <div class="text-center mt-3">
+                            <a href="{% url 'calligraphyApp:password_reset' %}" class="auth-link">رمز عبور خود را فراموش کرده‌اید؟</a>
+                        </div>
+                        <div class="auth-divider">
+                            <span>یا</span>
+                        </div>
+                        <div class="text-center">
+                            <a href="{% url 'calligraphyApp:register' %}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-user-plus ms-1"></i> ثبت نام کنید
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-section {
+        padding: 4rem 0;
+    }
+    
+    .auth-container {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+        padding: 2.5rem;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--secondary-color);
+    }
+    
+    .auth-decoration {
+        position: absolute;
+        top: -30px;
+        right: -30px;
+        width: 100px;
+        height: 100px;
+        opacity: 0.15;
+        transform: rotate(-15deg);
+        pointer-events: none;
+    }
+    
+    .auth-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    
+    .auth-title:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+    }
+    
+    .auth-form .form-label {
+        color: var(--text-color);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+    
+    .auth-form .input-group-text {
+        background-color: var(--light-bg);
+        border-color: var(--secondary-color);
+        color: var(--primary-color);
+    }
+    
+    .auth-form .form-control {
+        border-color: var(--secondary-color);
+        padding: 0.75rem 1rem;
+    }
+    
+    .auth-form .form-control:focus {
+        border-color: var(--accent-gold);
+        box-shadow: 0 0 0 0.25rem rgba(197, 160, 90, 0.25);
+    }
+    
+    .auth-form .form-check-input:checked {
+        background-color: var(--accent-gold);
+        border-color: var(--accent-gold);
+    }
+    
+    .auth-links {
+        margin-top: 2rem;
+    }
+    
+    .auth-link {
+        color: var(--accent-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    
+    .auth-link:hover {
+        color: var(--primary-color);
+        text-decoration: underline;
+    }
+    
+    .auth-divider {
+        position: relative;
+        text-align: center;
+        margin: 1.5rem 0;
+    }
+    
+    .auth-divider:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background-color: var(--secondary-color);
+    }
+    
+    .auth-divider span {
+        position: relative;
+        display: inline-block;
+        padding: 0 1rem;
+        background-color: #fff;
+        color: var(--text-muted);
+    }
+</style>
+{% endblock %} 

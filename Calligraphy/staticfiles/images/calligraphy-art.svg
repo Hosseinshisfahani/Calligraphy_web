@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="600px" viewBox="0 0 800 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>Calligraphy Art</title>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M200,300 C250,200 350,100 400,300 S550,400 600,300" stroke="#000000" stroke-width="8" stroke-linecap="round"/>
+        <path d="M250,350 C300,250 400,150 450,350 S600,450 650,350" stroke="#8b5a2b" stroke-width="6" stroke-linecap="round"/>
+        <path d="M150,250 C200,150 300,50 350,250 S500,350 550,250" stroke="#d4b59e" stroke-width="4" stroke-linecap="round"/>
+    </g>
+</svg> 

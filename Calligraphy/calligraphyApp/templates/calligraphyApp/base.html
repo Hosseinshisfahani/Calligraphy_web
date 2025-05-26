@@ -1,0 +1,232 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}هنر خوشنویسی{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/logo.jpg' %}" type="image/jpeg">
+    <link rel="icon" href="{% static 'images/logo.jpg' %}" sizes="any">
+    <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
+    <link rel="manifest" href="{% static 'site.webmanifest' %}">
+    <meta name="theme-color" content="#3D2E18">
+    
+    <!-- Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+    
+    <!-- Custom CSS -->
+    <link href="{% static 'css/calligraphy-theme.css' %}?v=1.4" rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}?v=1.4" rel="stylesheet">
+    {% block extra_css %}
+    <style>
+        body {
+            background: url("{% static 'images/back.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            background-attachment: fixed;
+            background-color: #f8f5f0;
+        }
+        /* Inline styles to ensure proper backgrounds */
+        .navbar-nav .nav-item .nav-link {
+            background-color: #ebe0c9 !important;
+            border: 1px solid #d8cbb3;
+            border-radius: 30px;
+        }
+        .navbar-nav .nav-item .nav-link:hover {
+            background-color: #d4a746 !important;
+            color: #231608 !important;
+        }
+        .admin-dashboard-link {
+            background-color: #2c3e50 !important;
+            color: #fff !important;
+            border-radius: 30px !important;
+            padding: 0.5rem 1rem !important;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .admin-dashboard-link:hover {
+            background-color: #34495e !important;
+            transform: translateY(-2px);
+            color: #fff !important;
+        }
+        .admin-dashboard-link i {
+            margin-left: 0.5rem;
+        }
+    </style>
+    {% endblock %}
+</head>
+<body>
+    <!-- Decorative ink splash top right -->
+    <div class="ink-splash splash-top-right"></div>
+    
+    <!-- Header with artistic calligraphy styling -->
+    <header class="main-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-center text-lg-start mb-3 mb-lg-0">
+                    <div class="logo-container d-flex align-items-center gap-2">
+                        <a href="{% url 'calligraphyApp:course_list' %}" class="site-logo d-flex align-items-center gap-2">
+                            <img src="{% static 'images/logo.jpg' %}" alt="لوگو خوشنویسی" style="height: 70px; width: auto; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); background: #fff; padding: 2px;">
+                            <span class="logo-text" style="font-size: 1.5rem; font-weight: bold; color: var(--primary-color);">هنر خوشنویسی</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <nav class="navbar navbar-expand-lg">
+                        <div class="container-fluid">
+                            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                                <i class="fas fa-feather-alt"></i>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                <ul class="navbar-nav ms-auto">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'calligraphyApp:course_list' %}">
+                                            <i class="fas fa-home"></i> صفحه اصلی
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'calligraphyApp:cart' %}">
+                                            <i class="fas fa-shopping-cart"></i> سبد خرید
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% if user.is_staff %}{% url 'calligraphyApp:admin_payment_list' %}{% else %}{% url 'calligraphyApp:payment_list' %}{% endif %}">
+                                            <i class="fas fa-receipt"></i> پیگیری پرداخت ها
+                                        </a>
+                                    </li>
+                                    
+                                    {% if user.is_authenticated %}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'calligraphyApp:profile' %}">
+                                                <i class="fas fa-user"></i> پروفایل
+                                            </a>
+                                        </li>
+                                        {% if user.is_staff %}
+                                        <li class="nav-item">
+                                            <a class="nav-link admin-dashboard-link" href="/dashboard/">
+                                                <i class="fas fa-tachometer-alt"></i> پنل مدیریت
+                                            </a>
+                                        </li>
+                                        {% endif %}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'calligraphyApp:my_courses' %}">
+                                                <i class="fas fa-book-reader"></i> دوره‌های من
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'calligraphyApp:logout' %}">
+                                                <i class="fas fa-sign-out-alt"></i> خروج
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'calligraphyApp:teacher_profile' %}">
+                                                <i class="fas fa-user-tie"></i> درباره استاد
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'calligraphyApp:login' %}">
+                                                <i class="fas fa-sign-in-alt"></i> ورود
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'calligraphyApp:register' %}">
+                                                <i class="fas fa-user-plus"></i> ثبت نام
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Decorative pen separator -->
+    <div class="pen-separator">
+        <div class="pen-line"></div>
+        <div class="pen-icon"><i class="fas fa-feather-alt"></i></div>
+        <div class="pen-line"></div>
+    </div>
+
+    <!-- Main content area -->
+    <main class="main-content">
+        <div class="container py-5">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <!-- Decorative pen separator before footer -->
+    <div class="pen-separator">
+        <div class="pen-line"></div>
+        <div class="pen-icon"><i class="fas fa-feather-alt"></i></div>
+        <div class="pen-line"></div>
+    </div>
+
+    <!-- Decorative ink splash bottom left -->
+    <div class="ink-splash splash-bottom-left"></div>
+
+    <!-- Footer with artistic styling -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="footer-heading">درباره ما</h5>
+                    <p></p>
+                </div>
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="footer-heading">دسترسی سریع</h5>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'calligraphyApp:course_list' %}"><i class="fas fa-angle-left"></i> دوره های آموزشی</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'calligraphyApp:profile' %}"><i class="fas fa-angle-left"></i> پروفایل کاربری</a></li>
+                            <li><a href="{% url 'calligraphyApp:my_courses' %}"><i class="fas fa-angle-left"></i> دوره‌های من</a></li>
+                        {% else %}
+                            <li><a href="{% url 'calligraphyApp:login' %}"><i class="fas fa-angle-left"></i> ورود به حساب کاربری</a></li>
+                            <li><a href="{% url 'calligraphyApp:register' %}"><i class="fas fa-angle-left"></i> ثبت نام</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="footer-heading">تماس با ما</h5>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-map-marker-alt"></i></li>
+                        <li><i class="fas fa-phone"></i></li>
+                        <li><i class="fas fa-envelope"></i></li>
+                    </ul>
+                    <div class="social-links mt-3">
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright-row">
+                <p class="copyright-text text-center mt-4">
+                    &copy; ۱۴۰۳ تمامی حقوق برای مرکز آموزش هنر خوشنویسی محفوظ است.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add smooth scrolling animation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 

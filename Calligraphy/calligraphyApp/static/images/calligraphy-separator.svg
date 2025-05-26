@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="50" viewBox="0 0 600 50">
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d4af37" stop-opacity="0.2" />
+      <stop offset="50%" stop-color="#d4af37" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#d4af37" stop-opacity="0.2" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main decorative line -->
+  <path d="M20,25 C60,10 100,40 150,25 C200,10 250,40 300,25 C350,10 400,40 450,25 C500,10 540,40 580,25" 
+        stroke="url(#goldGradient)" 
+        stroke-width="2" 
+        fill="none" 
+        stroke-linecap="round" />
+  
+  <!-- Small ink dot at center -->
+  <circle cx="300" cy="25" r="5" fill="#d4af37" opacity="0.6" />
+  
+  <!-- Thin decorative lines -->
+  <path d="M150,25 C180,15 220,35 250,25" 
+        stroke="#d4af37" 
+        stroke-width="1" 
+        fill="none" 
+        stroke-linecap="round"
+        opacity="0.4" 
+        transform="translate(0, -8)" />
+        
+  <path d="M350,25 C380,15 420,35 450,25" 
+        stroke="#d4af37" 
+        stroke-width="1" 
+        fill="none" 
+        stroke-linecap="round"
+        opacity="0.4" 
+        transform="translate(0, 8)" />
+  
+  <!-- Small flourishes at ends -->
+  <path d="M20,25 C15,20 15,30 10,25" 
+        stroke="#d4af37" 
+        stroke-width="1.5" 
+        fill="none" 
+        stroke-linecap="round"
+        opacity="0.6" />
+        
+  <path d="M580,25 C585,20 585,30 590,25" 
+        stroke="#d4af37" 
+        stroke-width="1.5" 
+        fill="none" 
+        stroke-linecap="round"
+        opacity="0.6" />
+</svg> 

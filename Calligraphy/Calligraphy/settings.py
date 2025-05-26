@@ -118,16 +118,31 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'  
-STATICFILES_DIRS = [  
-    os.path.join(BASE_DIR, 'static', 'css'),  # Adjust this depending on your static files folder  
-]  
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Media settings  
-MEDIA_URL = '/media/'  # This is the URL that will serve the media files  
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # This is the actual directory on disk  
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'calligraphyApp/static'),
+]
+
+# Cache control settings
+if DEBUG:
+    # In development, don't cache static files
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+else:
+    # In production, use ManifestStaticFilesStorage
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Authentication settings
+LOGIN_REDIRECT_URL = '/'  # Redirect to home page after login
+LOGOUT_REDIRECT_URL = '/'  # Redirect to home page after logout
+LOGIN_URL = '/accounts/login/'  # URL to redirect to for login

@@ -1,0 +1,744 @@
+{% extends 'calligraphyApp/base.html' %}
+{% load static %}
+
+{% block title %}پنل مدیریت{% endblock %}
+
+{% block content %}
+<div class="main-content-area">
+    <!-- (dashboard content starts here) -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#dashboard" data-section="dashboard">
+                                <i class="fas fa-tachometer-alt"></i>
+                                داشبورد
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#payments" data-section="payments">
+                                <i class="fas fa-credit-card"></i>
+                                پرداخت‌ها
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#users" data-section="users">
+                                <i class="fas fa-users"></i>
+                                کاربران
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#tickets" data-section="tickets">
+                                <i class="fas fa-ticket-alt"></i>
+                                تیکت‌ها
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#reports" data-section="reports">
+                                <i class="fas fa-chart-bar"></i>
+                                گزارش‌ها
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <!-- Display Django messages -->
+                {% if messages %}
+                <div class="row mt-3">
+                    <div class="col-12">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">داشبورد مدیریت</h1>
+                    <div>
+                        <a href="{% url 'calligraphyApp:admin_payment_list' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-list"></i> همه پرداخت‌ها
+                        </a>
+                        <a href="{% url 'calligraphyApp:payment_debug' %}" class="btn btn-outline-info">
+                            <i class="fas fa-bug"></i> دیباگ پرداخت‌ها
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Dashboard Section -->
+                <div id="dashboard" class="section active">
+                    <!-- Global Card Number Setting (Admin Only) -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <strong>شماره کارت بانکی سایت (جهت پرداخت کاربران)</strong>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" class="row g-2">
+                                {% csrf_token %}
+                                <div class="col-md-8">
+                                    <input type="text" name="card_number" class="form-control" value="{{ card_number }}" maxlength="32" placeholder="شماره کارت بانکی" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-success w-100">ذخیره شماره کارت</button>
+                                </div>
+                            </form>
+                            <div class="form-text mt-2">
+                                این شماره کارت به کاربران در صفحه پرداخت نمایش داده می‌شود.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Cards -->
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-right-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                کل کاربران</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_users }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-right-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                دوره‌های فعال</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ active_courses }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-book fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-right-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                درآمد ماهانه</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ monthly_income }} تومان</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-right-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                تیکت‌های باز</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ open_tickets }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-ticket-alt fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activities -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">فعالیت‌های اخیر</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="timeline">
+                                {% for activity in recent_activities %}
+                                <div class="timeline-item">
+                                    <div class="timeline-icon">
+                                        <i class="fas {{ activity.icon }}"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <p>{{ activity.text }}</p>
+                                        <small class="text-muted">{{ activity.time|date:"Y/m/d H:i" }}</small>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payments Section -->
+                <div id="payments" class="section">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">مدیریت پرداخت‌ها</h1>
+                        <div>
+                            <a href="{% url 'calligraphyApp:admin_payment_list' %}" class="btn btn-primary">
+                                <i class="fas fa-list ml-1"></i> مدیریت کامل پرداخت‌ها
+                            </a>
+                            <a href="{% url 'calligraphyApp:payment_debug' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-bug ml-1"></i> دیباگ
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">لیست پرداخت‌ها</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>کاربر</th>
+                                            <th>دوره</th>
+                                            <th>مبلغ</th>
+                                            <th>وضعیت</th>
+                                            <th>تاریخ</th>
+                                            <th>عملیات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for payment in payments %}
+                                        <tr>
+                                            <td>{{ payment.user.username }}</td>
+                                            <td>{{ payment.course.title }}</td>
+                                            <td>{{ payment.amount }} تومان</td>
+                                            <td>
+                                                <span class="badge {% if payment.status == 'approved' %}bg-success{% elif payment.status == 'pending' %}bg-warning{% else %}bg-danger{% endif %}">
+                                                    {{ payment.get_status_display }}
+                                                </span>
+                                            </td>
+                                            <td>{{ payment.created_at|date:"Y/m/d H:i" }}</td>
+                                            <td class="action-buttons">
+                                                <form method="POST" action="{% url 'calligraphyApp:update_payment_status' payment.id %}" class="d-inline status-form">
+                                                    {% csrf_token %}
+                                                    <select name="status" class="form-select form-select-sm">
+                                                        <option value="pending" {% if payment.status == 'pending' %}selected{% endif %}>در انتظار تایید</option>
+                                                        <option value="approved" {% if payment.status == 'approved' %}selected{% endif %}>تایید شده</option>
+                                                        <option value="rejected" {% if payment.status == 'rejected' %}selected{% endif %}>رد شده</option>
+                                                    </select>
+                                                    <button type="submit" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-save"></i>
+                                                    </button>
+                                                </form>
+                                                <a href="{% url 'calligraphyApp:direct_payment_detail' payment.id %}" class="btn btn-sm btn-info">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="{% url 'calligraphyApp:direct_payment_detail' payment.id %}" class="btn btn-sm btn-secondary" target="_blank">
+                                                    <i class="fas fa-external-link-alt"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Section -->
+                <div id="users" class="section">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">مدیریت کاربران</h1>
+                    </div>
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">لیست کاربران</h6>
+                            <a href="{% url 'calligraphyApp:user_list' %}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-users"></i> مشاهده همه کاربران
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>نام کاربری</th>
+                                            <th>نام</th>
+                                            <th>ایمیل</th>
+                                            <th>تاریخ عضویت</th>
+                                            <th>آخرین ورود</th>
+                                            <th>وضعیت</th>
+                                            <th>عملیات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for user in users %}
+                                        <tr>
+                                            <td>{{ user.username }}</td>
+                                            <td>{{ user.get_full_name|default:"-" }}</td>
+                                            <td>{{ user.email|default:"-" }}</td>
+                                            <td>{{ user.date_joined|date:"Y/m/d" }}</td>
+                                            <td>{{ user.last_login|date:"Y/m/d H:i"|default:"-" }}</td>
+                                            <td>
+                                                {% if user.is_active %}
+                                                <span class="badge bg-success">فعال</span>
+                                                {% else %}
+                                                <span class="badge bg-danger">غیرفعال</span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="action-buttons">
+                                                <a href="#" class="btn btn-sm btn-info">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm btn-warning">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-user-slash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tickets Section -->
+                <div id="tickets" class="section">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">مدیریت تیکت‌ها</h1>
+                    </div>
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">لیست تیکت‌های پشتیبانی</h6>
+                            <div>
+                                <button class="btn btn-sm btn-success">
+                                    <i class="fas fa-filter"></i> تیکت‌های باز
+                                </button>
+                                <button class="btn btn-sm btn-secondary">
+                                    <i class="fas fa-filter"></i> همه تیکت‌ها
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>شناسه</th>
+                                            <th>عنوان</th>
+                                            <th>کاربر</th>
+                                            <th>اولویت</th>
+                                            <th>وضعیت</th>
+                                            <th>تاریخ ایجاد</th>
+                                            <th>عملیات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ticket in tickets %}
+                                        <tr>
+                                            <td>{{ ticket.id }}</td>
+                                            <td>{{ ticket.subject }}</td>
+                                            <td>{{ ticket.user.username }}</td>
+                                            <td>
+                                                {% if ticket.priority == 'high' %}
+                                                <span class="badge bg-danger">بالا</span>
+                                                {% elif ticket.priority == 'medium' %}
+                                                <span class="badge bg-warning">متوسط</span>
+                                                {% else %}
+                                                <span class="badge bg-info">عادی</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if ticket.status == 'open' %}
+                                                <span class="badge bg-success">باز</span>
+                                                {% elif ticket.status == 'in_progress' %}
+                                                <span class="badge bg-warning">در حال بررسی</span>
+                                                {% else %}
+                                                <span class="badge bg-secondary">بسته</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ ticket.created_at|date:"Y/m/d H:i" }}</td>
+                                            <td class="action-buttons">
+                                                <a href="#" class="btn btn-sm btn-info">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm btn-success">
+                                                    <i class="fas fa-reply"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-times-circle"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports Section -->
+                <div id="reports" class="section">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">گزارش‌ها</h1>
+                    </div>
+
+                    <div class="row">
+                        <!-- Sales Report -->
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">گزارش فروش</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container" style="height: 300px;">
+                                        <canvas id="salesChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Report -->
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">وضعیت کاربران</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container" style="height: 300px;">
+                                        <canvas id="usersChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Courses Report -->
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">محبوب‌ترین دوره‌ها</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container" style="height: 300px;">
+                                        <canvas id="coursesChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Income Report -->
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">گزارش درآمد</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container" style="height: 300px;">
+                                        <canvas id="incomeChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: url("{% static 'images/back.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+        background-attachment: fixed;
+        background-color: #f8f5f0;
+    }
+    .sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 210px;
+        z-index: 100;
+        padding: 60px 0 0 0;
+        box-shadow: inset -1px 0 0 rgba(0, 0, 0, .07);
+        background: #f5ecd7;
+        overflow-y: auto;
+        border-left: 1px solid #e3e6f0;
+        min-height: 100vh;
+    }
+    .sidebar .nav-link {
+        font-weight: 500;
+        color: #333;
+        padding: 0.6rem 1.2rem;
+        margin: 0.2rem 0;
+        border-radius: 20px;
+        transition: background 0.2s, color 0.2s;
+    }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+        color: #fff;
+        background-color: #d4a746;
+    }
+    .sidebar .nav-link i {
+        margin-left: 0.5rem;
+    }
+    .main-content-area {
+        margin-right: 220px;
+        padding: 30px 20px 20px 20px;
+        min-height: 100vh;
+        background: rgba(255,255,255,0.95);
+        border-radius: 18px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+    .section {
+        display: none;
+    }
+    .section.active {
+        display: block;
+    }
+    .card {
+        margin-bottom: 1.2rem;
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e3e6f0;
+        border-radius: 16px 16px 0 0;
+    }
+    .table th, .table td {
+        font-size: 0.97rem;
+        padding: 0.5rem 0.7rem;
+    }
+    .badge {
+        padding: 0.35rem 0.7rem;
+        font-size: 0.92rem;
+        border-radius: 12px;
+    }
+    .timeline {
+        position: relative;
+        padding: 1rem 0;
+    }
+    .timeline-item {
+        position: relative;
+        padding-right: 2.5rem;
+        margin-bottom: 1.1rem;
+    }
+    .timeline-icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background-color: var(--primary-color, #d4a746);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .timeline-content {
+        padding: 0.7rem 1rem;
+        background-color: #f8f9fa;
+        border-radius: 0.5rem;
+        font-size: 0.98rem;
+    }
+    .row {
+        margin-right: 0;
+        margin-left: 0;
+    }
+    .col-xl-3, .col-xl-4, .col-xl-6, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-12,
+    .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-12 {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 991.98px) {
+        .sidebar {
+            position: static;
+            width: 100%;
+            height: auto;
+            min-height: unset;
+            border-left: none;
+            box-shadow: none;
+            padding: 0;
+        }
+        .main-content-area {
+            margin-right: 0;
+            padding: 15px 5px;
+            border-radius: 0;
+        }
+    }
+    @media (max-width: 767.98px) {
+        .main-content-area {
+            padding: 7px 2px;
+        }
+        .card {
+            border-radius: 10px;
+        }
+        .sidebar {
+            font-size: 0.98rem;
+        }
+    }
+    .status-form {
+        display: flex;
+        gap: 5px;
+    }
+    .form-select-sm {
+        max-width: 120px;
+    }
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+    .badge {
+        display: inline-block;
+        padding: 0.5em 0.75em;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set the dashboard as the default active section
+        document.getElementById('dashboard').classList.add('active');
+        
+        // Navigation for sidebar links
+        document.querySelectorAll('#sidebar .nav-link[data-section]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.dataset.section;
+                
+                // Update active states for links
+                document.querySelectorAll('#sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show selected section, hide others
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById(section).classList.add('active');
+            });
+        });
+        
+        // Status select handling
+        const statusSelects = document.querySelectorAll('select[name="status"]');
+        statusSelects.forEach(select => {
+            select.addEventListener('change', function() {
+                const row = this.closest('tr');
+                const statusBadge = row.querySelector('.badge');
+                
+                // Update badge class based on selected value
+                statusBadge.classList.remove('bg-success', 'bg-warning', 'bg-danger');
+                
+                if (this.value === 'approved') {
+                    statusBadge.classList.add('bg-success');
+                    statusBadge.textContent = 'تایید شده';
+                } else if (this.value === 'pending') {
+                    statusBadge.classList.add('bg-warning');
+                    statusBadge.textContent = 'در انتظار تایید';
+                } else if (this.value === 'rejected') {
+                    statusBadge.classList.add('bg-danger');
+                    statusBadge.textContent = 'رد شده';
+                }
+            });
+        });
+    });
+
+    // Charts
+    // Sales Chart
+    const salesCtx = document.getElementById('salesChart').getContext('2d');
+    new Chart(salesCtx, {
+        type: 'line',
+        data: {
+            labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور'],
+            datasets: [{
+                label: 'فروش',
+                data: [12, 19, 3, 5, 2, 3],
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        }
+    });
+
+    // Users Chart
+    const usersCtx = document.getElementById('usersChart').getContext('2d');
+    new Chart(usersCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['کاربران جدید', 'کاربران فعال', 'کاربران غیرفعال'],
+            datasets: [{
+                data: [300, 50, 100],
+                backgroundColor: [
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 205, 86)'
+                ]
+            }]
+        }
+    });
+
+    // Courses Chart
+    const coursesCtx = document.getElementById('coursesChart').getContext('2d');
+    new Chart(coursesCtx, {
+        type: 'bar',
+        data: {
+            labels: ['دوره 1', 'دوره 2', 'دوره 3', 'دوره 4', 'دوره 5'],
+            datasets: [{
+                label: 'تعداد ثبت‌نام',
+                data: [12, 19, 3, 5, 2],
+                backgroundColor: 'rgb(75, 192, 192)'
+            }]
+        }
+    });
+
+    // Income Chart
+    const incomeCtx = document.getElementById('incomeChart').getContext('2d');
+    new Chart(incomeCtx, {
+        type: 'line',
+        data: {
+            labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور'],
+            datasets: [{
+                label: 'درآمد',
+                data: [1200000, 1900000, 300000, 500000, 200000, 300000],
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        }
+    });
+</script>
+{% endblock %} 

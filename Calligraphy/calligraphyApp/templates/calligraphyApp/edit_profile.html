@@ -1,0 +1,206 @@
+{% extends 'calligraphyApp/base.html' %}
+{% load static %}
+
+{% block title %}ویرایش پروفایل{% endblock %}
+
+{% block content %}
+<section class="profile-edit-section">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="profile-edit-container">
+                    <div class="profile-edit-decoration">
+                        <img src="{% static 'images/feather-pen.svg' %}" alt="قلم خوشنویسی" class="decoration-image">
+                    </div>
+                    
+                    <h2 class="profile-edit-title">ویرایش پروفایل</h2>
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post" enctype="multipart/form-data" class="profile-edit-form">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-4 mb-md-0">
+                                <div class="profile-image-container">
+                                    {% if user.profile.profile_image %}
+                                        <img src="{{ user.profile.profile_image.url }}" alt="{{ user.get_full_name }}" class="current-profile-image">
+                                    {% else %}
+                                        <img src="{% static 'images/default-profile.png' %}" alt="{{ user.get_full_name }}" class="current-profile-image">
+                                    {% endif %}
+                                    
+                                    <div class="image-upload-container mt-3">
+                                        <label for="id_profile_image" class="form-label">تصویر پروفایل</label>
+                                        <input type="file" name="profile_image" id="id_profile_image" class="form-control" accept="image/*">
+                                        <small class="form-text text-muted">حداکثر سایز: 2 مگابایت</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="id_first_name" class="form-label">نام</label>
+                                            <input type="text" name="first_name" id="id_first_name" class="form-control" value="{{ user.first_name }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="id_last_name" class="form-label">نام خانوادگی</label>
+                                            <input type="text" name="last_name" id="id_last_name" class="form-control" value="{{ user.last_name }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="id_email" class="form-label">ایمیل</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        <input type="email" name="email" id="id_email" class="form-control" value="{{ user.email }}" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="id_phone" class="form-label">شماره موبایل</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        <input type="tel" name="phone" id="id_phone" class="form-control" value="{{ user.profile.phone }}" placeholder="09*********">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group mb-4">
+                                    <label for="id_bio" class="form-label">بیوگرافی</label>
+                                    <textarea name="bio" id="id_bio" class="form-control" rows="4">{{ user.profile.bio }}</textarea>
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save ms-2"></i> ذخیره تغییرات
+                                        </button>
+                                        <a href="{% url 'calligraphyApp:profile' %}" class="btn btn-outline-secondary">
+                                            <i class="fas fa-times ms-2"></i> انصراف
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-edit-section {
+        padding: 3rem 0;
+    }
+    
+    .profile-edit-container {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+        padding: 2.5rem;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--secondary-color);
+    }
+    
+    .profile-edit-decoration {
+        position: absolute;
+        top: -30px;
+        right: -30px;
+        width: 100px;
+        height: 100px;
+        opacity: 0.15;
+        transform: rotate(-15deg);
+        pointer-events: none;
+    }
+    
+    .profile-edit-title {
+        font-family: 'Vazirmatn', serif;
+        font-weight: 600;
+        color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    
+    .profile-edit-title:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+    }
+    
+    .current-profile-image {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid var(--accent-gold);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .image-upload-container {
+        background-color: var(--light-bg);
+        padding: 1rem;
+        border-radius: 10px;
+        border: 1px dashed var(--secondary-color);
+    }
+    
+    .profile-edit-form .form-label {
+        color: var(--text-color);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+    
+    .profile-edit-form .input-group-text {
+        background-color: var(--light-bg);
+        border-color: var(--secondary-color);
+        color: var(--primary-color);
+    }
+    
+    .profile-edit-form .form-control {
+        border-color: var(--secondary-color);
+        padding: 0.75rem 1rem;
+    }
+    
+    .profile-edit-form .form-control:focus {
+        border-color: var(--accent-gold);
+        box-shadow: 0 0 0 0.25rem rgba(197, 160, 90, 0.25);
+    }
+    
+    .profile-edit-form .form-text {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: 0.5rem;
+    }
+    
+    @media (max-width: 767.98px) {
+        .profile-edit-container {
+            padding: 1.5rem;
+        }
+        
+        .current-profile-image {
+            width: 120px;
+            height: 120px;
+        }
+    }
+</style>
+{% endblock %} 

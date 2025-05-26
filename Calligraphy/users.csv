@@ -1,0 +1,4 @@
+id,password,last_login,is_superuser,username,last_name,email,is_staff,is_active,date_joined,first_name
+1,pbkdf2_sha256$260000$JEHJ2rNhRAuxP8t87KCE0T$lj8nX2YWnR1A+ZsHjcZJPld6xEXpZZQk38PhRV1/k/8=,2025-05-05 07:27:44.510822,1,hossein.sh.isfahani,,,1,1,2025-04-19 19:49:11.648817,
+2,pbkdf2_sha256$1000000$BkqjFjEMW6jkK5FNhS7qyT$mT+qrcd+VIYcqt96nAg2N6IRJY3QuVdBKa7Wppys/Xg=,2025-04-20 05:10:23.248332,0,hossein333,mamade,porseshgareisfahani@gmail.com,0,1,2025-04-20 05:10:12.404601,حسین
+3,pbkdf2_sha256$260000$gYMFc6Sq4bz02cUAjlspdJ$8MvHaZP5Gu2Jz6j76hzwErPyOe4W9HQcfE86qnOMp98=,,0,حسین اصفهانی,اصفهانی,porseshgareisfahani@gmail.com,0,1,2025-05-05 07:29:00.226546,حسین
