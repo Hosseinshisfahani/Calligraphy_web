@@ -1,5 +1,26 @@
-# Caligraphy_web
-This project is created for uploading calligraphy courses and instructional videos.
+# Calligraphy Web
+
+A web application for showcasing and learning calligraphy.
+
+## Features
+
+- Gallery of calligraphy works
+- Tutorials and learning resources
+- User profiles
+- Community interaction
+
+## Setup
+
+1. Clone the repository
+2. Install dependencies
+3. Run the application
+
+## Technologies
+
+- Python
+- Django
+- HTML/CSS
+- JavaScript
 
 ## Project Structure
 
@@ -32,14 +53,6 @@ Several management commands are available to help manage video content:
   - Options:
     - `--course-id ID` - Link videos to an existing course
     - `--create-parts` - Create a new course with parts for each letter group
-
-## Setup Instructions
-
-1. Clone the repository
-2. Install dependencies from requirements.txt
-3. Configure the database
-4. Run migrations
-5. Start the development server
 
 ## Video Files
 
