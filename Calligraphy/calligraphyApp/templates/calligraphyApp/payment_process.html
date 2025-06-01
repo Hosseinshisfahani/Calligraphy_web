@@ -1,5 +1,6 @@
 {% extends 'calligraphyApp/base.html' %}
 {% load static %}
+{% load price_format %}
 
 {% block content %}
 <div class="container py-5">
@@ -10,7 +11,7 @@
                 
                 <div class="alert alert-info mb-4">
                     <h5 class="mb-2">اطلاعات پرداخت:</h5>
-                    <p class="mb-1">مبلغ قابل پرداخت: {{ amount }} تومان</p>
+                    <p class="mb-1">مبلغ قابل پرداخت: {{ amount|format_price }} تومان</p>
                     <p class="mb-0">لطفا مبلغ را به شماره کارت زیر واریز کنید و تصویر رسید را آپلود نمایید.</p>
                 </div>
 

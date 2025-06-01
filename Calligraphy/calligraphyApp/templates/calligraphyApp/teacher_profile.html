@@ -1,5 +1,6 @@
 {% extends 'calligraphyApp/base.html' %}
 {% load static %}
+{% load price_format %}
 
 {% block title %}استاد {{ teacher.user.get_full_name }} | هنر خوشنویسی{% endblock %}
 
@@ -176,7 +177,7 @@
                                 {% if course.price == 0 %}
                                     <span class="free-course">رایگان</span>
                                 {% else %}
-                                    <span class="price-amount">{{ course.price }} تومان</span>
+                                    <span class="price-amount">{{ course.price|format_price }} تومان</span>
                                 {% endif %}
                     </div>
                             <a href="{% url 'calligraphyApp:course_detail' course.id %}" class="course-link">

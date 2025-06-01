@@ -1,5 +1,6 @@
 {% extends 'calligraphyApp/base.html' %}
 {% load static %}
+{% load price_format %}
 
 {% block title %}سبد خرید{% endblock %}
 
@@ -52,11 +53,11 @@
                                     </div>
                                 </div>
                                 <div class="cart-item-price">
-                                    <span class="price-amount">{{ item.course.price }}</span>
+                                    <span class="price-amount">{{ item.course.price|format_price }}</span>
                                     <span class="price-currency">تومان</span>
                                 </div>
                                 <div class="cart-item-actions">
-                                    <form method="post" action="{% url 'calligraphyApp:remove_from_cart' item.course.id %}">
+                                    <form method="post" action="{% url 'calligraphyApp:remove_from_cart' item.id %}">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-remove">
                                             <i class="fas fa-trash-alt"></i>
@@ -107,19 +108,19 @@
                     
                     <div class="summary-row">
                         <span class="summary-label">قیمت کل:</span>
-                        <span class="summary-value">{{ total_price }} تومان</span>
+                        <span class="summary-value">{{ total_price|format_price }} تومان</span>
                 </div>
                     
                     {% if discount %}
                         <div class="summary-row discount-row">
                             <span class="summary-label">تخفیف:</span>
-                            <span class="summary-value discount-value">{{ discount_amount }} تومان</span>
+                            <span class="summary-value discount-value">{{ discount_amount|format_price }} تومان</span>
                         </div>
                     {% endif %}
                     
                     <div class="summary-row total-row">
                         <span class="summary-label">مبلغ قابل پرداخت:</span>
-                        <span class="summary-value">{{ final_price }} تومان</span>
+                        <span class="summary-value">{{ final_price|format_price }} تومان</span>
                         </div>
                     
                     {% if cart_items %}

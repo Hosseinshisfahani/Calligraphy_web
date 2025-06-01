@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 {% extends 'calligraphyApp/base.html' %}
+{% load static %}
+{% load price_format %}
 
-{% load static %}  
 {% block title %}هنر خوشنویسی | صفحه اصلی{% endblock %}
 
 {% block content %}
@@ -52,7 +53,7 @@
                 </div>
                 
                 <div class="course-card-footer">
-                    <span class="course-price">{{ course.price }} تومان</span>
+                    <span class="course-price">{{ course.price|format_price }} تومان</span>
                     <a href="{% url 'calligraphyApp:course_detail' course.id %}" class="btn btn-primary btn-sm">
                         <i class="fas fa-eye ms-1"></i> مشاهده دوره
                     </a>

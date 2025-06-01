@@ -1,4 +1,5 @@
 {% extends 'calligraphyApp/base.html' %}
+{% load price_format %}
 {% block title %}جزئیات پرداخت شماره {{ payment.id }}{% endblock %}
 
 {% block content %}
@@ -21,7 +22,7 @@
                             <p><strong>کاربر:</strong> {{ payment.user.username }}</p>
                             <p><strong>نام کامل:</strong> {{ payment.user.first_name }} {{ payment.user.last_name }}</p>
                             <p><strong>دوره:</strong> {{ payment.course.title }}</p>
-                            <p><strong>مبلغ:</strong> {{ payment.amount }} تومان</p>
+                            <p><strong>مبلغ:</strong> {{ payment.amount|format_price }} تومان</p>
                         </div>
                         <div class="col-md-6">
                             <p><strong>وضعیت:</strong> 

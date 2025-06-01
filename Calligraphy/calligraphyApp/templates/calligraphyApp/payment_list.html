@@ -1,4 +1,5 @@
 {% extends 'calligraphyApp/base.html' %}
+{% load price_format %}
 {% block title %}لیست پرداخت‌های من{% endblock %}
 
 {% block content %}
@@ -20,7 +21,7 @@
                 {% for payment in payments %}
                 <tr>
                     <td>{{ payment.course.title }}</td>
-                    <td>{{ payment.amount }} تومان</td>
+                    <td>{{ payment.amount|format_price }} تومان</td>
                     <td>
                         <span class="badge {% if payment.status == 'approved' %}bg-success{% elif payment.status == 'pending' %}bg-warning{% else %}bg-danger{% endif %}">
                             {{ payment.get_status_display }}
