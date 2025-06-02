@@ -7,7 +7,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [  
     # Django admin should come before our app URLs to avoid interference
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),  
     # Then include app URLs
     path('', include('calligraphyApp.urls')),  # Include the URLs from calligraphyApp  
     path('accounts/', include('django.contrib.auth.urls')),  # Add Django auth URLs  

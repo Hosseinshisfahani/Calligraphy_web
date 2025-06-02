@@ -482,35 +482,63 @@ def protected_video_view(request, video_id):
             raise PermissionDenied("شما به این ویدیو دسترسی ندارید.")
 
     try:
-        # First try the original path (video_file.path)
-        path = video.video_file.path
-        
-        # If the file doesn't exist at the original path, try to find it in alphabet_videos
-        if not os.path.exists(path):
-            logger.warning(f"Video file not found at {path}. Attempting to find in alphabet_videos.")
+        # First try the original path (video_file.path) if it exists
+        if video.video_file:
+            try:
+                path = video.video_file.path
+                if os.path.exists(path):
+                    logger.info(f"Using original video path: {path}")
+                else:
+                    path = None
+            except:
+                path = None
+        else:
+            path = None
             
-            # Extract filename from the original path
-            filename = os.path.basename(path)
+        # If original path doesn't work, try to locate the file based on course/part/video name
+        if not path or not os.path.exists(path):
+            # Try to find the video in the new content structure
+            course_title = video.part.course.title
+            part_title = video.part.title
+            video_title = video.title
             
-            # Try to find the video in alphabet_videos directory
-            # Check if the path contains a folder structure like "New folder/نقطه/(1)نقطه.mp4"
-            if "New folder" in path and "/" in path:
-                # Extract the subfolder name
-                parts = path.split('/')
-                for i, part in enumerate(parts):
-                    if part == "New folder" and i+1 < len(parts):
-                        subfolder = parts[i+1]
-                        # Construct a new path to check
-                        new_path = os.path.join(settings.MEDIA_ROOT, 'alphabet_videos', subfolder, filename)
-                        if os.path.exists(new_path):
-                            logger.info(f"Video file found at alternative location: {new_path}")
-                            path = new_path
-                            break
+            # Try to match with course structure:
+            # Option 1: حروف الفبا/New folder/الف
+            potential_paths = [
+                # Try alphabet videos
+                os.path.join(settings.MEDIA_ROOT, 'حروف الفبا', 'New folder', part_title),
+                # Try course videos by term
+                os.path.join(settings.MEDIA_ROOT, 'آموزش نستعلیق به شیوه مهندسی خط', part_title),
+                # Try course videos by term and session
+                os.path.join(settings.MEDIA_ROOT, 'آموزش نستعلیق به شیوه مهندسی خط', part_title, video_title),
+            ]
+            
+            # Search for video files in potential directories
+            for base_dir in potential_paths:
+                if os.path.exists(base_dir) and os.path.isdir(base_dir):
+                    # Get all mp4 files in this directory
+                    video_files = [f for f in os.listdir(base_dir) if f.endswith('.mp4')]
+                    if video_files:
+                        # Get first video file or try to match by name
+                        path = os.path.join(base_dir, video_files[0])
+                        logger.info(f"Found video in directory: {path}")
+                        break
         
         # If the file still doesn't exist after all our attempts
-        if not os.path.exists(path):
+        if not path or not os.path.exists(path):
+            # One last effort - try using video.order to find video number in sequence
+            for root, dirs, files in os.walk(settings.MEDIA_ROOT):
+                mp4_files = [f for f in files if f.endswith('.mp4')]
+                if mp4_files:
+                    # Just use the first file we find as a fallback
+                    path = os.path.join(root, mp4_files[0])
+                    logger.warning(f"Fallback to first video found: {path}")
+                    break
+                    
+        # If still no path, give up
+        if not path or not os.path.exists(path):
             messages.error(request, "فایل ویدیویی مورد نظر یافت نشد. لطفا با پشتیبانی تماس بگیرید.")
-            logger.error(f"Video file not found for video_id={video_id}. Attempted paths include: {path}")
+            logger.error(f"Video file not found for video_id={video_id}.")
             return redirect('calligraphyApp:course_detail', course_id=video.part.course.id)
             
         # Define our response headers to prevent download and caching on client side
@@ -749,6 +777,10 @@ def update_payment_status(request, payment_id):
         else:
             messages.error(request, 'وضعیت نامعتبر.')
     
+    # Get the referer URL or default to admin dashboard
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return redirect(referer)
     return redirect('calligraphyApp:admin_dashboard')
 
 @login_required

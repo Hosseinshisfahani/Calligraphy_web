@@ -235,7 +235,7 @@
                                             </td>
                                             <td>{{ payment.created_at|date:"Y/m/d H:i" }}</td>
                                             <td class="action-buttons">
-                                                <form method="POST" action="{% url 'calligraphyApp:update_payment_status' payment.id %}" class="d-inline status-form">
+                                                <form method="POST" action="{% url 'calligraphyApp:payments_update' payment.id %}" class="d-inline status-form">
                                                     {% csrf_token %}
                                                     <select name="status" class="form-select form-select-sm">
                                                         <option value="pending" {% if payment.status == 'pending' %}selected{% endif %}>در انتظار تایید</option>

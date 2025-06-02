@@ -1,7 +1,7 @@
 # urls.py  
 from django.conf import settings  
 from django.conf.urls.static import static  
-from django.urls import path  
+from django.urls import path, re_path  
 from .views import * 
 from django.contrib.auth import views as auth_views  
 from . import views
@@ -10,13 +10,18 @@ from .forms import LoginForm
 app_name = 'calligraphyApp'
 
 urlpatterns = [
-    # Admin-related URLs - placed first for higher priority
+    # Management URLs (formerly admin URLs) - using 'manage' prefix to avoid conflicts
     path('dashboard/', views.admin_dashboard, name='admin_dashboard'),
-    path('admin/payments/', views.admin_payment_list, name='admin_payment_list'),
-    path('admin/payments/<int:payment_id>/', views.admin_payment_detail, name='admin_payment_detail'),
-    path('admin/payment/update/<int:payment_id>/', views.update_payment_status, name='update_payment_status'),
-    path('admin/payment/debug/', views.payment_debug, name='payment_debug'),
-
+    path('manage/payment/debug/', views.payment_debug, name='payment_debug'),
+    
+    # Payment update URLs - using 'manage' prefix
+    path('manage/payments/update/<int:payment_id>/', views.update_payment_status, name='payments_update'),
+    path('manage/payment/update/<int:payment_id>/', views.update_payment_status, name='update_payment_status'),
+    
+    # Payment detail and list views - using 'manage' prefix
+    path('manage/payments/', views.admin_payment_list, name='admin_payment_list'),
+    path('manage/payments/<int:payment_id>/', views.admin_payment_detail, name='admin_payment_detail'),
+    
     # Direct manual access paths for payments by ID (no conflicting patterns)
     path('payments/detail/<int:payment_id>/', views.admin_payment_detail, name='direct_payment_detail'),
     
