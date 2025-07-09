@@ -31,8 +31,36 @@
 
 {% block extra_css %}
 <style>
-  .messages { display: none !important; }
+    .btn.btn-primary {
+        width: 100%;
+        font-size: 1.2rem;
+        padding: 0.75rem 0;
+        z-index: 10;
+    }
+    @media (max-width: 768px) {
+        .btn.btn-primary {
+            width: 100%;
+            font-size: 1.2rem;
+            padding: 1rem 0;
+            position: relative;
+            z-index: 1000;
+        }
+    }
 </style>
+<script>
+// Ensure button is always clickable on mobile
+window.addEventListener('DOMContentLoaded', function() {
+  var btn = document.querySelector('button[type="submit"].btn.btn-primary');
+  if(btn) {
+    btn.addEventListener('touchstart', function() {
+      btn.style.boxShadow = '0 0 0 4px #d4a74655';
+    });
+    btn.addEventListener('touchend', function() {
+      btn.style.boxShadow = '';
+    });
+  }
+});
+</script>
 {% endblock %}
 
 {% endblock %}
