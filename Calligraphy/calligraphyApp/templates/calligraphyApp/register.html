@@ -15,46 +15,96 @@
                     <form method="post">
                         {% csrf_token %}
                         <div class="form-group mb-3">
-                            {{ form.username.label_tag }}
-                            {{ form.username }}
-                            {% with field=form.username %}
-                                {% include 'calligraphyApp/partials/error_message.html' %}
-                            {% endwith %}
+                            <label for="id_username" class="form-label">نام کاربری</label>
+                            <input type="text" name="username" id="id_username" class="form-control" 
+                                   placeholder="نام کاربری خود را وارد کنید" 
+                                   autocomplete="username" 
+                                   minlength="3"
+                                   maxlength="150"
+                                   required>
+                            {% if form.username.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.username.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="form-group mb-3">
-                            {{ form.email.label_tag }}
-                            {{ form.email }}
-                            {% with field=form.email %}
-                                {% include 'calligraphyApp/partials/error_message.html' %}
-                            {% endwith %}
+                            <label for="id_email" class="form-label">ایمیل</label>
+                            <input type="email" name="email" id="id_email" class="form-control" 
+                                   placeholder="ایمیل خود را وارد کنید" 
+                                   autocomplete="email" 
+                                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                   required>
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.email.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="form-group mb-3">
-                            {{ form.phone.label_tag }}
-                            {{ form.phone }}
-                            {% with field=form.phone %}
-                                {% include 'calligraphyApp/partials/error_message.html' %}
-                            {% endwith %}
+                            <label for="id_phone" class="form-label">شماره تلفن</label>
+                            <input type="tel" name="phone" id="id_phone" class="form-control" 
+                                   placeholder="شماره تلفن خود را وارد کنید" 
+                                   autocomplete="tel" 
+                                   pattern="[0-9+\-\s()]{10,15}"
+                                   required>
+                            {% if form.phone.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.phone.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="form-group mb-3">
-                            {{ form.password.label_tag }}
-                            {{ form.password }}
-                            {% with field=form.password %}
-                                {% include 'calligraphyApp/partials/error_message.html' %}
-                            {% endwith %}
+                            <label for="id_password" class="form-label">رمز عبور</label>
+                            <input type="password" name="password" id="id_password" class="form-control" 
+                                   placeholder="رمز عبور خود را وارد کنید" 
+                                   autocomplete="new-password" 
+                                   minlength="8"
+                                   required>
+                            {% if form.password.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.password.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="form-group mb-3">
-                            {{ form.password2.label_tag }}
-                            {{ form.password2 }}
-                            {% with field=form.password2 %}
-                                {% include 'calligraphyApp/partials/error_message.html' %}
-                            {% endwith %}
+                            <label for="id_password2" class="form-label">تکرار رمز عبور</label>
+                            <input type="password" name="password2" id="id_password2" class="form-control" 
+                                   placeholder="رمز عبور را مجدداً وارد کنید" 
+                                   autocomplete="new-password" 
+                                   minlength="8"
+                                   required>
+                            {% if form.password2.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.password2.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="form-group mb-3">
-                            {{ form.level.label_tag }}
-                            {{ form.level }}
-                            {% with field=form.level %}
-                                {% include 'calligraphyApp/partials/error_message.html' %}
-                            {% endwith %}
+                            <label for="id_level" class="form-label">انتخاب سطح</label>
+                            <select name="level" id="id_level" class="form-control form-select" required>
+                                <option value="">سطح خود را انتخاب کنید</option>
+                                <option value="beginner">مقدماتی و متوسط</option>
+                                <option value="intermediate">خوش عالی و ممتاز</option>
+                                <option value="advanced">فوق ممتاز</option>
+                            </select>
+                            {% if form.level.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.level.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">ثبت نام</button>
@@ -68,7 +118,119 @@
 {% endblock %}
 
 {% block extra_css %}
+<!-- FORCE mobile compatibility -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="format-detection" content="telephone=no">
+
 <style>
+    /* EMERGENCY mobile field fix */
+    * {
+        -webkit-tap-highlight-color: rgba(212, 167, 70, 0.3) !important;
+        -webkit-touch-callout: default !important;
+    }
+    
+    /* FORCE ALL FORM ELEMENTS TO BE CLICKABLE */
+    .form-group, .mb-3 {
+        position: relative !important;
+        z-index: 1000 !important;
+        pointer-events: auto !important;
+    }
+    
+    /* ENSURE FIELDS ARE ALWAYS ABOVE OTHER ELEMENTS */
+    input, select, .form-control, .form-select {
+        position: relative !important;
+        z-index: 999999 !important;
+        pointer-events: auto !important;
+        touch-action: manipulation !important;
+        -webkit-user-select: text !important;
+        user-select: text !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
+        background-color: #fff !important;
+        border: 3px solid #d4a746 !important;
+        min-height: 70px !important;
+        height: 70px !important;
+        font-size: 20px !important;
+        padding: 20px !important;
+        border-radius: 15px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin: 15px 0 !important;
+        box-shadow: 0 4px 8px rgba(212, 167, 70, 0.3) !important;
+    }
+    
+    /* FORCE LABELS TO BE CLICKABLE */
+    label, .form-label {
+        position: relative !important;
+        z-index: 999999 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        min-height: 40px !important;
+        font-size: 18px !important;
+        font-weight: bold !important;
+        padding: 10px 5px !important;
+        display: block !important;
+        color: #2b1d0e !important;
+        touch-action: manipulation !important;
+    }
+    
+    /* MUCH LARGER MOBILE FIELDS */
+    input, select, textarea, .form-control, .form-select {
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        appearance: none !important;
+        border-radius: 12px !important;
+        pointer-events: auto !important;
+        touch-action: manipulation !important;
+        -webkit-user-select: text !important;
+        user-select: text !important;
+        background-color: #fff !important;
+        position: relative !important;
+        z-index: 999999 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
+        cursor: text !important;
+        
+        /* MUCH BIGGER TOUCH TARGETS */
+        min-height: 60px !important;
+        height: 60px !important;
+        padding: 15px 20px !important;
+        font-size: 18px !important;
+        line-height: 1.5 !important;
+        margin: 10px 0 !important;
+        
+        /* BIGGER CLICKABLE AREA */
+        border: 3px solid #d4a746 !important;
+        box-shadow: 0 0 0 5px rgba(212, 167, 70, 0.2) !important;
+        
+        /* FORCE SPACING */
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    select, .form-select {
+        cursor: pointer !important;
+        -webkit-user-select: none !important;
+        user-select: none !important;
+        min-height: 65px !important;
+        height: 65px !important;
+        padding: 15px 50px 15px 20px !important;
+    }
+    
+    label, .form-label {
+        font-size: 16px !important;
+        font-weight: bold !important;
+        color: #2b1d0e !important;
+        margin-bottom: 8px !important;
+        display: block !important;
+        cursor: pointer !important;
+        padding: 5px 0 !important;
+    }
     .auth-section {
         padding: 4rem 0;
     }
@@ -169,20 +331,466 @@
         font-size: 1.2rem;
         padding: 0.75rem 0;
         z-index: 10;
+        min-height: 50px; /* Better touch target */
+        border-radius: 8px;
     }
+
+    /* Comprehensive Mobile Responsiveness Improvements */
     @media (max-width: 768px) {
+        .container {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        
+        .col-md-6 {
+            max-width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        
+        .card {
+            margin: 0 5px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+            border-radius: 15px;
+        }
+        
+        .card-header {
+            padding: 1.5rem 1.5rem 1rem;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .card-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+                 .form-control, .form-select {
+             /* EXTRA LARGE MOBILE FIELDS */
+             padding: 20px 25px !important;
+             font-size: 20px !important; /* Much larger text */
+             border-radius: 15px !important;
+             min-height: 70px !important; /* Much bigger touch target */
+             height: 70px !important;
+             border: 4px solid #d4a746 !important; /* Thick visible border */
+             transition: all 0.3s ease !important;
+             position: relative !important;
+             z-index: 9999 !important;
+             touch-action: manipulation !important;
+             -webkit-user-select: text !important;
+             -moz-user-select: text !important;
+             -ms-user-select: text !important;
+             user-select: text !important;
+             -webkit-appearance: none !important;
+             -moz-appearance: none !important;
+             appearance: none !important;
+             background-color: #fff !important;
+             pointer-events: auto !important;
+             cursor: text !important;
+             opacity: 1 !important;
+             visibility: visible !important;
+             display: block !important;
+             width: 100% !important;
+             margin: 15px 0 !important;
+             
+             /* ENHANCED VISUAL FEEDBACK */
+             box-shadow: 0 4px 8px rgba(212, 167, 70, 0.3), inset 0 0 0 2px #fff !important;
+         }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 0.25rem rgba(212, 167, 70, 0.25);
+            outline: none;
+        }
+        
+        .form-label {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
         .btn.btn-primary {
             width: 100%;
-            font-size: 1.2rem;
-            padding: 1rem 0;
+            font-size: 1.1rem;
+            padding: 0.875rem 0;
             position: relative;
             z-index: 1000;
+            min-height: 50px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-gold));
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn.btn-primary:hover, .btn.btn-primary:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn.btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .invalid-feedback {
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        
+        .alert {
+            font-size: 0.9rem;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .mt-5 {
+            margin-top: 2rem !important;
+        }
+        
+        .card-header {
+            padding: 1rem;
+        }
+        
+        .card-header h3 {
+            font-size: 1.3rem;
+        }
+        
+        .card-body {
+            padding: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-control, .form-select {
+            /* MAXIMUM SIZE FOR SMALLEST PHONES */
+            font-size: 22px !important;
+            padding: 25px 30px !important;
+            min-height: 80px !important;
+            height: 80px !important;
+            border: 5px solid #d4a746 !important;
+            border-radius: 20px !important;
+            margin: 20px 0 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            
+            /* MAXIMUM CLICKABLE AREA */
+            box-shadow: 0 8px 16px rgba(212, 167, 70, 0.4), inset 0 0 0 3px #fff !important;
+            background-color: #fffef8 !important;
+            
+            /* FORCE VISIBILITY */
+            z-index: 999999 !important;
+            position: relative !important;
+            pointer-events: auto !important;
+            touch-action: manipulation !important;
+        }
+        
+        .form-label, label {
+            font-size: 18px !important;
+            font-weight: bold !important;
+            padding: 10px 5px !important;
+            margin-bottom: 10px !important;
+            cursor: pointer !important;
+            display: block !important;
+            color: #2b1d0e !important;
+            min-height: 40px !important;
+        }
+        
+        .btn.btn-primary {
+            font-size: 1rem;
+            padding: 0.875rem 0;
+        }
+        
+        .form-label {
+            font-size: 0.95rem;
+        }
+    }
+    
+    /* Enhanced form styling for better UX */
+    .form-control:not(:placeholder-shown):valid {
+        border-color: var(--success-color);
+    }
+    
+    .form-control:not(:placeholder-shown):invalid {
+        border-color: #dc3545;
+    }
+    
+         /* Loading state for submit button */
+     .btn.btn-primary:disabled {
+         opacity: 0.7;
+         cursor: not-allowed;
+     }
+
+                 /* AGGRESSIVE Mobile Input Field Fixes */
+      @media (max-width: 768px) {
+          /* Force remove all appearance and enable all interactions */
+          .form-control, .form-select, input, select {
+              -webkit-appearance: none !important;
+              -moz-appearance: none !important;
+              appearance: none !important;
+              background-color: #fff !important;
+              pointer-events: auto !important;
+              touch-action: manipulation !important;
+              -webkit-touch-callout: default !important;
+              -webkit-user-select: text !important;
+              -moz-user-select: text !important;
+              user-select: text !important;
+              cursor: text !important;
+              position: relative !important;
+              z-index: 999 !important;
+              opacity: 1 !important;
+              visibility: visible !important;
+              display: block !important;
+          }
+
+          .form-select, select {
+              cursor: pointer !important;
+              -webkit-user-select: none !important;
+              -moz-user-select: none !important;
+              user-select: none !important;
+          }
+
+          .form-control:focus, .form-select:focus, input:focus, select:focus {
+              -webkit-appearance: none !important;
+              -moz-appearance: none !important;
+              appearance: none !important;
+              outline: none !important;
+              border-color: var(--accent-gold) !important;
+              box-shadow: 0 0 0 0.25rem rgba(212, 167, 70, 0.25) !important;
+          }
+
+          .form-select {
+              background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e") !important;
+              background-repeat: no-repeat !important;
+              background-position: left 0.75rem center !important;
+              background-size: 16px 12px !important;
+              padding-left: 2.25rem !important;
+          }
+
+          .form-select:focus {
+              background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23d4a746' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e") !important;
+          }
+
+          /* Ensure labels are clickable */
+          .form-label, label {
+              cursor: pointer !important;
+              touch-action: manipulation !important;
+              -webkit-tap-highlight-color: transparent !important;
+              pointer-events: auto !important;
+              position: relative !important;
+              z-index: 999 !important;
+          }
+
+          /* Fix any potential overlay issues */
+          .card, .card-body, .container, .form-group, .mb-3 {
+              position: relative !important;
+              z-index: auto !important;
+          }
+
+          .form-group, .mb-3 {
+              z-index: 1000 !important;
+          }
+
+          /* Force override any conflicting styles */
+          * {
+              -webkit-tap-highlight-color: rgba(212, 167, 70, 0.3) !important;
+          }
+
+          /* Remove any potential blocking elements */
+          .form-control::before, .form-control::after,
+          .form-select::before, .form-select::after {
+              display: none !important;
+          }
+
+          /* Ensure form elements are above everything */
+          input[type="text"], input[type="email"], input[type="tel"], 
+          input[type="password"], select, .form-control, .form-select {
+              z-index: 9999 !important;
+              position: relative !important;
         }
     }
 </style>
+
 <script>
-// Ensure button is always clickable on mobile
-window.addEventListener('DOMContentLoaded', function() {
+// IMMEDIATE mobile field access fix - runs before DOM ready
+(function() {
+    console.log('IMMEDIATE mobile fix running...');
+    
+    function fixMobileFields() {
+        const allElements = document.querySelectorAll('input, select, .form-control, .form-select, label, .form-label');
+        allElements.forEach(function(el) {
+            el.style.pointerEvents = 'auto';
+            el.style.touchAction = 'manipulation';
+            el.style.webkitAppearance = 'none';
+            el.style.zIndex = '999999';
+            el.style.position = 'relative';
+            el.style.opacity = '1';
+            el.style.visibility = 'visible';
+        });
+    }
+    
+    // Run immediately
+    fixMobileFields();
+    
+    // Run when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fixMobileFields);
+    } else {
+        fixMobileFields();
+    }
+    
+    // Run after a delay for good measure
+    setTimeout(fixMobileFields, 100);
+    setTimeout(fixMobileFields, 500);
+    setTimeout(fixMobileFields, 1000);
+})();
+
+document.addEventListener('DOMContentLoaded', function() {
+    // AGGRESSIVE mobile input fixes - force everything to work
+    console.log('Mobile fix script loaded');
+    
+    // Get ALL possible input elements
+    const allInputs = document.querySelectorAll('input, select, .form-control, .form-select');
+    console.log('Found inputs:', allInputs.length);
+    
+    allInputs.forEach(function(input, index) {
+        console.log('Fixing input', index, input.type || input.tagName);
+        
+        // FORCE all properties
+        input.style.pointerEvents = 'auto';
+        input.style.touchAction = 'manipulation';
+        input.style.webkitAppearance = 'none';
+        input.style.appearance = 'none';
+        input.style.zIndex = '9999';
+        input.style.position = 'relative';
+        input.style.backgroundColor = '#fff';
+        input.style.opacity = '1';
+        input.style.visibility = 'visible';
+        
+        // Remove any blocking attributes
+        input.removeAttribute('readonly');
+        input.removeAttribute('disabled');
+        
+        // MULTIPLE event listeners for maximum compatibility
+        
+        // Touch events
+        input.addEventListener('touchstart', function(e) {
+            console.log('Touch start on', this.id || this.name);
+            e.stopPropagation();
+            this.focus();
+        }, {passive: false});
+        
+        input.addEventListener('touchend', function(e) {
+            console.log('Touch end on', this.id || this.name);
+            e.preventDefault();
+            e.stopPropagation();
+            this.focus();
+            if (this.tagName.toLowerCase() === 'select') {
+                this.click();
+            }
+        }, {passive: false});
+        
+        // Click events
+        input.addEventListener('click', function(e) {
+            console.log('Click on', this.id || this.name);
+            e.stopPropagation();
+            this.focus();
+        });
+        
+        // Mouse events for desktop fallback
+        input.addEventListener('mousedown', function(e) {
+            console.log('Mouse down on', this.id || this.name);
+            this.focus();
+        });
+        
+        // Focus events
+        input.addEventListener('focus', function(e) {
+            console.log('Focus on', this.id || this.name);
+            this.style.borderColor = '#d4a746';
+        });
+    });
+
+    // AGGRESSIVE label handling
+    const allLabels = document.querySelectorAll('label, .form-label');
+    console.log('Found labels:', allLabels.length);
+    
+    allLabels.forEach(function(label, index) {
+        console.log('Fixing label', index);
+        
+        label.style.pointerEvents = 'auto';
+        label.style.touchAction = 'manipulation';
+        label.style.cursor = 'pointer';
+        label.style.zIndex = '9999';
+        
+        // Multiple event types for maximum compatibility
+        ['touchend', 'click', 'mousedown'].forEach(function(eventType) {
+            label.addEventListener(eventType, function(e) {
+                console.log('Label', eventType, 'on', this.getAttribute('for'));
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const targetId = this.getAttribute('for');
+                if (targetId) {
+                    const targetInput = document.getElementById(targetId);
+                    if (targetInput) {
+                        console.log('Focusing target input:', targetId);
+                        targetInput.focus();
+                        if (targetInput.tagName.toLowerCase() === 'select') {
+                            setTimeout(() => targetInput.click(), 50);
+                        }
+                    }
+                } else {
+                    // Find the next input in the same container
+                    const container = this.closest('.form-group, .mb-3');
+                    if (container) {
+                        const input = container.querySelector('input, select');
+                        if (input) {
+                            console.log('Focusing container input');
+                            input.focus();
+                            if (input.tagName.toLowerCase() === 'select') {
+                                setTimeout(() => input.click(), 50);
+                            }
+                        }
+                    }
+                }
+            }, {passive: false});
+        });
+    });
+
+    // FORCE fix any form containers that might be blocking
+    const containers = document.querySelectorAll('.form-group, .mb-3, .card-body, .container');
+    containers.forEach(function(container) {
+        container.style.pointerEvents = 'auto';
+        container.style.position = 'relative';
+        container.style.zIndex = 'auto';
+    });
+
+    // Debug: Add visual indicators when fields are touched
+    const debugStyle = document.createElement('style');
+    debugStyle.textContent = `
+        .form-control:focus, .form-select:focus {
+            border: 3px solid #d4a746 !important;
+            box-shadow: 0 0 10px rgba(212, 167, 70, 0.5) !important;
+        }
+        .form-control:active, .form-select:active {
+            background-color: #f0f8ff !important;
+        }
+    `;
+    document.head.appendChild(debugStyle);
+
+    // Enhanced button touch handling - same as working login page  
   var btn = document.querySelector('button[type="submit"].btn.btn-primary');
   if(btn) {
     btn.addEventListener('touchstart', function() {
@@ -193,5 +801,184 @@ window.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+// ULTRA-ENHANCED TOUCH TARGET SCRIPT FOR MAXIMUM CLICKABLE AREA
+setTimeout(function() {
+    console.log('ULTRA-ENHANCED TOUCH TARGET SCRIPT LOADING...');
+    
+    function createMaximumTouchTargets() {
+        // Target the specific problematic fields - FIXED IDs
+        const fieldIds = ['id_username', 'id_email', 'id_phone', 'id_level'];
+        
+        fieldIds.forEach(function(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                console.log('Creating MAXIMUM touch target for:', fieldId);
+                
+                // Create a massive invisible touch area
+                const megaTouchArea = document.createElement('div');
+                megaTouchArea.style.position = 'absolute';
+                megaTouchArea.style.top = '-30px';
+                megaTouchArea.style.left = '-30px';
+                megaTouchArea.style.right = '-30px';
+                megaTouchArea.style.bottom = '-30px';
+                megaTouchArea.style.zIndex = '999997';
+                megaTouchArea.style.cursor = field.tagName === 'SELECT' ? 'pointer' : 'text';
+                megaTouchArea.style.pointerEvents = 'auto';
+                megaTouchArea.style.touchAction = 'manipulation';
+                megaTouchArea.className = 'mega-touch-area';
+                
+                // Ensure parent container is positioned
+                const parent = field.closest('.form-group, .mb-3') || field.parentElement;
+                if (parent) {
+                    parent.style.position = 'relative';
+                    parent.style.zIndex = '999998';
+                    parent.appendChild(megaTouchArea);
+                    
+                    // Add massive touch handling
+                    ['touchstart', 'touchend', 'click', 'mousedown'].forEach(function(eventType) {
+                        megaTouchArea.addEventListener(eventType, function(e) {
+                            console.log('MEGA TOUCH AREA', eventType, 'for', fieldId);
+                            e.stopPropagation();
+                            e.preventDefault();
+                            
+                            // Visual feedback
+                            if (eventType === 'touchstart') {
+                                megaTouchArea.style.backgroundColor = 'rgba(212, 167, 70, 0.1)';
+                                field.style.transform = 'scale(1.02)';
+                            }
+                            
+                            if (eventType === 'touchend' || eventType === 'click') {
+                                megaTouchArea.style.backgroundColor = '';
+                                field.style.transform = '';
+                                
+                                // Force focus and click
+                                setTimeout(function() {
+                                    field.focus();
+                                    if (field.tagName === 'SELECT') {
+                                        field.click();
+                                    }
+                                }, 50);
+                            }
+                        }, {passive: false});
+                    });
+                }
+                
+                // Also make the field itself HUGE
+                field.style.minHeight = '90px';
+                field.style.height = '90px';
+                field.style.fontSize = '24px';
+                field.style.padding = '30px';
+                field.style.border = '6px solid #d4a746';
+                field.style.borderRadius = '25px';
+                field.style.margin = '25px 0';
+                field.style.boxShadow = '0 10px 20px rgba(212, 167, 70, 0.5), inset 0 0 0 4px #fff';
+                field.style.backgroundColor = '#fffef8';
+                field.style.width = '100%';
+                field.style.boxSizing = 'border-box';
+                field.style.zIndex = '999999';
+                field.style.position = 'relative';
+                
+                console.log('MEGA field enhanced:', fieldId, 
+                    'Height:', field.offsetHeight, 
+                    'Width:', field.offsetWidth,
+                    'Computed style:', window.getComputedStyle(field).display);
+            } else {
+                console.log('Field not found:', fieldId);
+            }
+        });
+        
+        // Also enhance all labels
+        const labels = document.querySelectorAll('label');
+        labels.forEach(function(label) {
+            label.style.minHeight = '50px';
+            label.style.fontSize = '20px';
+            label.style.fontWeight = 'bold';
+            label.style.padding = '15px 10px';
+            label.style.cursor = 'pointer';
+            label.style.display = 'block';
+            label.style.color = '#2b1d0e';
+            label.style.touchAction = 'manipulation';
+            label.style.pointerEvents = 'auto';
+            label.style.zIndex = '999999';
+        });
+    }
+    
+    // Run the enhancement multiple times for maximum effect
+    createMaximumTouchTargets();
+    setTimeout(createMaximumTouchTargets, 200);
+    setTimeout(createMaximumTouchTargets, 500);
+    setTimeout(createMaximumTouchTargets, 1000);
+    setTimeout(createMaximumTouchTargets, 2000);
+    
+    // ADDITIONAL: Create clickable overlays for ALL form fields
+    function createClickableOverlays() {
+        const allFormFields = document.querySelectorAll('input, select, .form-control, .form-select');
+        console.log('Creating overlays for', allFormFields.length, 'fields');
+        
+        allFormFields.forEach(function(field, index) {
+            console.log('Creating overlay for field', index, field.id || field.name);
+            
+            // Create a transparent overlay that covers the entire field
+            const overlay = document.createElement('div');
+            overlay.style.position = 'absolute';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.right = '0';
+            overlay.style.bottom = '0';
+            overlay.style.zIndex = '999999';
+            overlay.style.cursor = field.tagName === 'SELECT' ? 'pointer' : 'text';
+            overlay.style.backgroundColor = 'transparent';
+            overlay.className = 'field-overlay';
+            
+            // Make field container relative
+            const container = field.closest('.form-group, .mb-3') || field.parentElement;
+            if (container) {
+                container.style.position = 'relative';
+                container.appendChild(overlay);
+                
+                // Add click handling to overlay
+                overlay.addEventListener('click', function(e) {
+                    console.log('Overlay clicked for field:', field.id || field.name);
+                    e.stopPropagation();
+                    e.preventDefault();
+                    
+                    // Force focus and click
+                    field.focus();
+                    if (field.tagName === 'SELECT') {
+                        field.click();
+                    }
+                });
+                
+                // Also handle touch events
+                overlay.addEventListener('touchstart', function(e) {
+                    console.log('Overlay touchstart for field:', field.id || field.name);
+                    e.stopPropagation();
+                    overlay.style.backgroundColor = 'rgba(212, 167, 70, 0.1)';
+                });
+                
+                overlay.addEventListener('touchend', function(e) {
+                    console.log('Overlay touchend for field:', field.id || field.name);
+                    e.stopPropagation();
+                    e.preventDefault();
+                    overlay.style.backgroundColor = 'transparent';
+                    
+                    setTimeout(function() {
+                        field.focus();
+                        if (field.tagName === 'SELECT') {
+                            field.click();
+                        }
+                    }, 50);
+                });
+            }
+        });
+    }
+    
+    // Run overlay creation
+    setTimeout(createClickableOverlays, 300);
+    setTimeout(createClickableOverlays, 800);
+    setTimeout(createClickableOverlays, 1500);
+    
+}, 100);
 </script>
 {% endblock %} 

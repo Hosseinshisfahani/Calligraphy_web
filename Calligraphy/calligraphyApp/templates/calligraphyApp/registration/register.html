@@ -30,35 +30,313 @@
 </section>
 
 {% block extra_css %}
+<!-- FORCE mobile compatibility -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="format-detection" content="telephone=no">
+
 <style>
+    /* EMERGENCY mobile field fix */
+    * {
+        -webkit-tap-highlight-color: rgba(212, 167, 70, 0.3) !important;
+        -webkit-touch-callout: default !important;
+    }
+    
+    /* FORCE ALL FORM ELEMENTS TO BE CLICKABLE */
+    .card-body, form, p {
+        position: relative !important;
+        z-index: 1000 !important;
+        pointer-events: auto !important;
+    }
+    
+    /* PROPER SIZED MOBILE FIELDS - DJANGO FORM TARGETING */
+    input, select, textarea, .form-control, .form-select {
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        appearance: none !important;
+        border-radius: 8px !important;
+        pointer-events: auto !important;
+        touch-action: manipulation !important;
+        -webkit-user-select: text !important;
+        user-select: text !important;
+        background-color: #fff !important;
+        position: relative !important;
+        z-index: 999999 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
+        cursor: text !important;
+        
+        /* PROPERLY SIZED TOUCH TARGETS */
+        min-height: 48px !important;
+        height: 48px !important;
+        padding: 12px 16px !important;
+        font-size: 16px !important;
+        line-height: 1.5 !important;
+        margin: 8px 0 !important;
+        
+        /* CLEAN BORDERS AND STYLING */
+        border: 2px solid #d4a746 !important;
+        box-shadow: 0 2px 4px rgba(212, 167, 70, 0.2) !important;
+        
+        /* FORCE FULL WIDTH */
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        background-color: #fff !important;
+    }
+    
+    select {
+        cursor: pointer !important;
+        -webkit-user-select: none !important;
+        user-select: none !important;
+        min-height: 50px !important;
+        height: 50px !important;
+        padding: 12px 40px 12px 16px !important;
+    }
+    
+    /* FORCE LABELS TO BE CLICKABLE AND VISIBLE */
+    label {
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        color: #2b1d0e !important;
+        margin-bottom: 6px !important;
+        display: block !important;
+        cursor: pointer !important;
+        padding: 4px 2px !important;
+        position: relative !important;
+        z-index: 999999 !important;
+        pointer-events: auto !important;
+        touch-action: manipulation !important;
+        min-height: 24px !important;
+    }
+
     .btn.btn-primary {
         width: 100%;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         padding: 0.75rem 0;
-        z-index: 10;
+        z-index: 999999;
+        min-height: 44px;
+        border-radius: 8px;
+        margin-top: 16px;
+        border: 2px solid #d4a746;
+        box-shadow: 0 2px 4px rgba(212, 167, 70, 0.2);
     }
+    
+    /* Enhanced mobile breakpoints */
     @media (max-width: 768px) {
         .btn.btn-primary {
             width: 100%;
             font-size: 1.2rem;
-            padding: 1rem 0;
+            padding: 0.875rem 0;
             position: relative;
-            z-index: 1000;
+            z-index: 999999;
+            min-height: 48px;
+        }
+        
+        /* SLIGHTLY LARGER FIELDS FOR MOBILE */
+        input, select, textarea {
+            min-height: 56px !important;
+            height: 56px !important;
+            font-size: 18px !important;
+            padding: 16px 20px !important;
+            border: 2px solid #d4a746 !important;
+            border-radius: 10px !important;
+            margin: 12px 0 !important;
+        }
+        
+        label {
+            font-size: 18px !important;
+            min-height: 28px !important;
+            padding: 6px 4px !important;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        /* OPTIMAL SIZE FOR SMALLEST PHONES */
+        input, select, textarea {
+            min-height: 60px !important;
+            height: 60px !important;
+            font-size: 20px !important;
+            padding: 18px 24px !important;
+            border: 3px solid #d4a746 !important;
+            border-radius: 12px !important;
+            margin: 16px 0 !important;
+            box-shadow: 0 4px 8px rgba(212, 167, 70, 0.3) !important;
+        }
+        
+        label {
+            font-size: 20px !important;
+            min-height: 32px !important;
+            padding: 8px 6px !important;
         }
     }
 </style>
+
 <script>
-// Ensure button is always clickable on mobile
-window.addEventListener('DOMContentLoaded', function() {
-  var btn = document.querySelector('button[type="submit"].btn.btn-primary');
-  if(btn) {
-    btn.addEventListener('touchstart', function() {
-      btn.style.boxShadow = '0 0 0 4px #d4a74655';
-    });
-    btn.addEventListener('touchend', function() {
-      btn.style.boxShadow = '';
-    });
-  }
+// IMMEDIATE mobile field access fix - runs before DOM ready
+(function() {
+    console.log('IMMEDIATE mobile fix for DJANGO FORMS running...');
+    
+    function fixMobileFields() {
+        const allElements = document.querySelectorAll('input, select, textarea, label');
+        allElements.forEach(function(el) {
+            el.style.pointerEvents = 'auto';
+            el.style.touchAction = 'manipulation';
+            el.style.webkitAppearance = 'none';
+            el.style.zIndex = '999999';
+            el.style.position = 'relative';
+            el.style.opacity = '1';
+            el.style.visibility = 'visible';
+        });
+    }
+    
+    // Run immediately
+    fixMobileFields();
+    
+    // Run when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fixMobileFields);
+    } else {
+        fixMobileFields();
+    }
+    
+    // Run after multiple delays for good measure
+    setTimeout(fixMobileFields, 100);
+    setTimeout(fixMobileFields, 500);
+    setTimeout(fixMobileFields, 1000);
+    setTimeout(fixMobileFields, 2000);
+})();
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DJANGO FORM mobile enhancement script loaded');
+    
+    // Enhanced mobile fixes for Django auto-generated forms
+    function enhanceDjangoForm() {
+        // Get ALL form elements (Django generates them automatically)
+        const allInputs = document.querySelectorAll('input, select, textarea');
+        console.log('Found Django form inputs:', allInputs.length);
+        
+        allInputs.forEach(function(input, index) {
+            console.log('Enhancing Django input', index, input.type || input.tagName, input.name || input.id);
+            
+            // FORCE all properties for maximum compatibility
+            input.style.pointerEvents = 'auto';
+            input.style.touchAction = 'manipulation';
+            input.style.webkitAppearance = 'none';
+            input.style.appearance = 'none';
+            input.style.zIndex = '999999';
+            input.style.position = 'relative';
+            input.style.backgroundColor = '#fff';
+            input.style.opacity = '1';
+            input.style.visibility = 'visible';
+            input.style.minHeight = '48px';
+            input.style.fontSize = '16px';
+            input.style.padding = '12px 16px';
+            input.style.border = '2px solid #d4a746';
+            input.style.borderRadius = '8px';
+            input.style.width = '100%';
+            input.style.boxSizing = 'border-box';
+            input.style.margin = '8px 0';
+            
+            // Remove any blocking attributes
+            input.removeAttribute('readonly');
+            input.removeAttribute('disabled');
+            
+            // MULTIPLE event listeners for maximum mobile compatibility
+            ['touchstart', 'touchend', 'click', 'mousedown', 'focus'].forEach(function(eventType) {
+                input.addEventListener(eventType, function(e) {
+                    console.log('DJANGO FORM event:', eventType, 'on', this.name || this.id || this.tagName);
+                    
+                    if (eventType === 'touchstart') {
+                        this.style.transform = 'scale(1.02)';
+                        this.style.boxShadow = '0 0 20px rgba(212, 167, 70, 0.6)';
+                    }
+                    
+                    if (eventType === 'touchend' || eventType === 'click') {
+                        this.style.transform = '';
+                        e.stopPropagation();
+                        
+                        setTimeout(() => {
+                            this.focus();
+                            if (this.tagName === 'SELECT') {
+                                this.click();
+                            }
+                        }, 50);
+                    }
+                    
+                    if (eventType === 'focus') {
+                        this.style.borderColor = '#d4a746';
+                        this.style.boxShadow = '0 0 20px rgba(212, 167, 70, 0.6)';
+                    }
+                }, {passive: false});
+            });
+        });
+        
+        // Enhanced label handling for Django forms
+        const allLabels = document.querySelectorAll('label');
+        console.log('Found Django form labels:', allLabels.length);
+        
+        allLabels.forEach(function(label, index) {
+            console.log('Enhancing Django label', index);
+            
+            label.style.pointerEvents = 'auto';
+            label.style.touchAction = 'manipulation';
+            label.style.cursor = 'pointer';
+            label.style.zIndex = '999999';
+            label.style.fontSize = '16px';
+            label.style.fontWeight = '600';
+            label.style.minHeight = '24px';
+            label.style.padding = '4px 2px';
+            label.style.display = 'block';
+            label.style.color = '#2b1d0e';
+            
+            // Enhanced label click handling
+            ['touchend', 'click'].forEach(function(eventType) {
+                label.addEventListener(eventType, function(e) {
+                    console.log('DJANGO LABEL', eventType, 'on label:', this.textContent);
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Find associated input - Django forms usually put input right after label
+                    let targetInput = this.nextElementSibling;
+                    while (targetInput && !['INPUT', 'SELECT', 'TEXTAREA'].includes(targetInput.tagName)) {
+                        targetInput = targetInput.nextElementSibling;
+                    }
+                    
+                    if (targetInput) {
+                        console.log('Focusing Django input from label:', targetInput.name || targetInput.id);
+                        targetInput.focus();
+                        if (targetInput.tagName === 'SELECT') {
+                            setTimeout(() => targetInput.click(), 50);
+                        }
+                    }
+                }, {passive: false});
+            });
+        });
+    }
+    
+    // Run Django form enhancements multiple times
+    enhanceDjangoForm();
+    setTimeout(enhanceDjangoForm, 300);
+    setTimeout(enhanceDjangoForm, 800);
+    setTimeout(enhanceDjangoForm, 1500);
+    setTimeout(enhanceDjangoForm, 3000);
+
+    // Enhanced button handling
+    var btn = document.querySelector('button[type="submit"].btn.btn-primary');
+    if(btn) {
+        console.log('Enhancing submit button');
+        btn.addEventListener('touchstart', function() {
+            btn.style.boxShadow = '0 0 0 4px #d4a74655';
+            btn.style.transform = 'scale(1.02)';
+        });
+        btn.addEventListener('touchend', function() {
+            btn.style.boxShadow = '';
+            btn.style.transform = '';
+        });
+    }
 });
 </script>
 {% endblock %}
