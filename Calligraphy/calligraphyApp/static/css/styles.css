@@ -596,3 +596,406 @@ body {
     display: none;
   }
 }  
+
+/* Enhanced Mobile Navigation and Layout Improvements */
+
+/* Mobile-First Navigation Enhancements */
+@media (max-width: 992px) {
+  /* Improve mobile navigation layout */
+  .navbar-collapse {
+    background-color: var(--paper-dark);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--border-color);
+  }
+
+  .navbar-toggler {
+    padding: 0.5rem 0.75rem;
+    font-size: 1.25rem;
+    border: 2px solid var(--accent-gold);
+    border-radius: 8px;
+    background-color: var(--paper-dark);
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+  }
+
+  .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.25rem rgba(212, 167, 70, 0.25);
+    outline: none;
+  }
+
+  .navbar-toggler:hover {
+    background-color: var(--accent-gold);
+    color: var(--primary-color);
+  }
+
+  /* Mobile Navigation Items */
+  .navbar-nav {
+    width: 100%;
+  }
+
+  .nav-item {
+    margin: 0.3rem 0;
+    width: 100%;
+  }
+
+  .nav-link {
+    padding: 1rem 1.5rem !important;
+    margin: 0 !important;
+    border-radius: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    background-color: var(--light-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    color: var(--text-color) !important;
+    text-decoration: none !important;
+    min-height: 52px !important;
+  }
+
+  .nav-link i {
+    margin-left: 0.75rem;
+    font-size: 1.1rem;
+    color: var(--accent-color);
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .nav-link:hover,
+  .nav-link:focus {
+    background-color: var(--accent-gold) !important;
+    color: var(--primary-color) !important;
+    border-color: var(--accent-gold) !important;
+    transform: translateX(-3px) !important;
+    text-decoration: none !important;
+  }
+
+  .nav-link:hover i,
+  .nav-link:focus i {
+    color: var(--primary-color) !important;
+  }
+
+  /* Special styling for admin dashboard link */
+  .admin-dashboard-link {
+    background-color: var(--primary-color) !important;
+    color: var(--light-text) !important;
+    border-color: var(--primary-color) !important;
+  }
+
+  .admin-dashboard-link:hover,
+  .admin-dashboard-link:focus {
+    background-color: var(--accent-color) !important;
+    color: var(--light-text) !important;
+    border-color: var(--accent-color) !important;
+  }
+
+  .admin-dashboard-link i {
+    color: var(--light-text) !important;
+  }
+
+  .admin-dashboard-link:hover i,
+  .admin-dashboard-link:focus i {
+    color: var(--light-text) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Enhanced mobile styles for small tablets and phones */
+  
+  /* Container improvements */
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* Navigation improvements */
+  .navbar-collapse {
+    padding: 1.25rem;
+    margin-top: 0.75rem;
+  }
+
+  .nav-link {
+    padding: 0.875rem 1.25rem !important;
+    font-size: 0.95rem !important;
+    min-height: 50px !important;
+  }
+
+  .nav-link i {
+    font-size: 1rem;
+    margin-left: 0.5rem;
+  }
+
+  /* Course grid improvements */
+  .course-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  /* Course card improvements */
+  .course-card {
+    margin-bottom: 1.25rem;
+  }
+
+  .course-card-body {
+    padding: 1.25rem;
+  }
+
+  .course-card-footer {
+    padding: 1rem 1.25rem;
+  }
+
+  .course-card-title {
+    font-size: 1.1rem;
+    line-height: 1.4;
+  }
+
+  .course-card-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* Button improvements */
+  .btn {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    min-height: 50px;
+    border-radius: 8px;
+  }
+
+  .btn-sm {
+    padding: 0.625rem 1rem;
+    font-size: 0.9rem;
+    min-height: 42px;
+  }
+
+  .btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    min-height: 56px;
+  }
+
+  /* Form improvements */
+  .form-control, .form-select {
+    padding: 0.875rem 1rem;
+    font-size: 16px; /* Prevents zoom on iOS */
+    min-height: 50px;
+    border-radius: 8px;
+  }
+
+  .form-label {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Hero section improvements */
+  .hero-section {
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Page header improvements */
+  .page-header {
+    padding: 2rem 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-title {
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens - portrait phones */
+  
+  /* Container adjustments */
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  /* Navigation for very small screens */
+  .navbar-collapse {
+    padding: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .nav-link {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.95rem !important;
+    min-height: 48px !important;
+  }
+
+  .nav-link i {
+    font-size: 0.95rem;
+    margin-left: 0.5rem;
+  }
+
+  /* Course grid for very small screens */
+  .course-grid {
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .course-card-body {
+    padding: 1rem;
+  }
+
+  .course-card-footer {
+    padding: 0.875rem 1rem;
+  }
+
+  .course-card-title {
+    font-size: 1rem;
+  }
+
+  .course-card-text {
+    font-size: 0.9rem;
+  }
+
+  /* Button adjustments */
+  .btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+    min-height: 48px;
+  }
+
+  .btn-sm {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.85rem;
+    min-height: 40px;
+  }
+
+  /* Form adjustments */
+  .form-control, .form-select {
+    padding: 0.75rem 1rem;
+    font-size: 16px;
+    min-height: 48px;
+  }
+
+  /* Typography adjustments */
+  .hero-title {
+    font-size: 1.6rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+  }
+
+  /* Spacing adjustments for very small screens */
+  .py-5 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .mt-5 {
+    margin-top: 2rem !important;
+  }
+
+  .mb-5 {
+    margin-bottom: 2rem !important;
+  }
+
+  .hero-section {
+    padding: 2rem 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-header {
+    padding: 1.5rem 0;
+    margin-bottom: 1.25rem;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 767px) and (orientation: landscape) {
+  .navbar-collapse {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .hero-section {
+    padding: 1.5rem 0;
+  }
+
+  .page-header {
+    padding: 1.5rem 0;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Touch-specific styles */
+  .btn:hover {
+    transform: none; /* Disable hover transforms on touch devices */
+  }
+
+  .course-card:hover {
+    transform: none;
+  }
+
+  .nav-link:hover {
+    transform: none !important;
+  }
+
+  /* Increase touch targets */
+  .btn {
+    min-height: 48px;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .form-control, .form-select {
+    min-height: 48px;
+  }
+
+  .nav-link {
+    min-height: 52px !important;
+  }
+}
+
+/* High resolution displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Optimize for retina displays */
+  .course-card-img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  .btn {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}  

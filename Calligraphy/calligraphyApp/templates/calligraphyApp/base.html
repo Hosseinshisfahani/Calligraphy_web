@@ -3,7 +3,12 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Enhanced Mobile Viewport Configuration -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>{% block title %}هنر خوشنویسی{% endblock %}</title>
     
     <!-- Favicon -->
@@ -19,8 +24,8 @@
     <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
     
     <!-- Custom CSS -->
-    <link href="{% static 'css/calligraphy-theme.css' %}?v=1.4" rel="stylesheet">
-    <link href="{% static 'css/styles.css' %}?v=1.4" rel="stylesheet">
+    <link href="{% static 'css/calligraphy-theme.css' %}?v=1.5" rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}?v=1.5" rel="stylesheet">
     {% block extra_css %}
     <style>
         body {
@@ -29,31 +34,149 @@
             background-attachment: fixed;
             background-color: #f8f5f0;
         }
-        /* Inline styles to ensure proper backgrounds */
-        .navbar-nav .nav-item .nav-link {
-            background-color: #ebe0c9 !important;
-            border: 1px solid #d8cbb3;
-            border-radius: 30px;
+        
+        /* Enhanced Mobile Navigation Styles */
+        @media (max-width: 992px) {
+            .navbar-collapse {
+                background-color: #ebe0c9;
+                border-radius: 12px;
+                padding: 1.5rem;
+                margin-top: 1rem;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                border: 1px solid #d8cbb3;
+            }
+            
+            .navbar-toggler {
+                border: 2px solid #d4a746;
+                background-color: #ebe0c9;
+                color: #2b1d0e;
+                padding: 0.5rem 0.75rem;
+                border-radius: 8px;
+            }
+            
+            .navbar-toggler:focus {
+                box-shadow: 0 0 0 0.25rem rgba(212, 167, 70, 0.25);
+            }
+            
+            .nav-item {
+                margin: 0.3rem 0;
+                width: 100%;
+            }
+            
+            .nav-link {
+                background-color: #f7f2e7 !important;
+                color: #261a0b !important;
+                border: 1px solid #d8cbb3 !important;
+                border-radius: 10px !important;
+                padding: 1rem 1.5rem !important;
+                margin: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+                width: 100% !important;
+                font-weight: 500 !important;
+                min-height: 52px !important;
+                transition: all 0.3s ease !important;
+            }
+            
+            .nav-link i {
+                margin-left: 0.75rem;
+                font-size: 1.1rem;
+                color: #975a1a;
+                width: 20px;
+                text-align: center;
+            }
+            
+            .nav-link:hover,
+            .nav-link:focus {
+                background-color: #d4a746 !important;
+                color: #2b1d0e !important;
+                border-color: #d4a746 !important;
+                transform: translateX(-3px) !important;
+            }
+            
+            .nav-link:hover i,
+            .nav-link:focus i {
+                color: #2b1d0e !important;
+            }
+            
+            .admin-dashboard-link {
+                background-color: #2b1d0e !important;
+                color: #f0ebe0 !important;
+                border-color: #2b1d0e !important;
+            }
+            
+            .admin-dashboard-link:hover,
+            .admin-dashboard-link:focus {
+                background-color: #975a1a !important;
+                color: #f0ebe0 !important;
+                border-color: #975a1a !important;
+            }
+            
+            .admin-dashboard-link i {
+                color: #f0ebe0 !important;
+            }
+            
+            .admin-dashboard-link:hover i,
+            .admin-dashboard-link:focus i {
+                color: #f0ebe0 !important;
+            }
         }
-        .navbar-nav .nav-item .nav-link:hover {
-            background-color: #d4a746 !important;
-            color: #231608 !important;
+        
+        @media (max-width: 768px) {
+            .navbar-collapse {
+                padding: 1.25rem;
+                margin-top: 0.75rem;
+            }
+            
+            .nav-link {
+                padding: 0.875rem 1.25rem !important;
+                font-size: 0.95rem !important;
+                min-height: 50px !important;
+            }
+            
+            .nav-link i {
+                font-size: 1rem;
+                margin-left: 0.5rem;
+            }
         }
-        .admin-dashboard-link {
-            background-color: #2c3e50 !important;
-            color: #fff !important;
-            border-radius: 30px !important;
-            padding: 0.5rem 1rem !important;
-            margin: 0 0.5rem;
-            transition: all 0.3s ease;
+        
+        @media (max-width: 480px) {
+            .navbar-collapse {
+                padding: 1rem;
+                margin-top: 0.5rem;
+            }
+            
+            .nav-link {
+                padding: 0.75rem 1rem !important;
+                font-size: 0.95rem !important;
+                min-height: 48px !important;
+            }
+            
+            .nav-link i {
+                font-size: 0.95rem;
+                margin-left: 0.5rem;
+            }
         }
-        .admin-dashboard-link:hover {
-            background-color: #34495e !important;
-            transform: translateY(-2px);
-            color: #fff !important;
+        
+        /* Logo responsive adjustments */
+        @media (max-width: 768px) {
+            .logo-container img {
+                height: 50px !important;
+            }
+            
+            .logo-text {
+                font-size: 1.3rem !important;
+            }
         }
-        .admin-dashboard-link i {
-            margin-left: 0.5rem;
+        
+        @media (max-width: 480px) {
+            .logo-container img {
+                height: 40px !important;
+            }
+            
+            .logo-text {
+                font-size: 1.1rem !important;
+            }
         }
     </style>
     {% endblock %}
@@ -62,22 +185,22 @@
     <!-- Decorative ink splash top right -->
     <div class="ink-splash splash-top-right"></div>
     
-    <!-- Header with artistic calligraphy styling -->
+    <!-- Header with enhanced mobile styling -->
     <header class="main-header">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-4 text-center text-lg-start mb-3 mb-lg-0">
-                    <div class="logo-container d-flex align-items-center gap-2">
+                <div class="col-12 col-lg-4 text-center text-lg-start mb-3 mb-lg-0">
+                    <div class="logo-container d-flex align-items-center justify-content-center justify-content-lg-start gap-2">
                         <a href="{% url 'calligraphyApp:course_list' %}" class="site-logo d-flex align-items-center gap-2">
                             <img src="{% static 'images/logo.jpg' %}" alt="لوگو خوشنویسی" style="height: 70px; width: auto; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); background: #fff; padding: 2px;">
                             <span class="logo-text" style="font-size: 1.5rem; font-weight: bold; color: var(--primary-color);">هنر خوشنویسی</span>
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-8">
+                <div class="col-12 col-lg-8">
                     <nav class="navbar navbar-expand-lg">
                         <div class="container-fluid">
-                            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                                 <i class="fas fa-feather-alt"></i>
                             </button>
                             <div class="collapse navbar-collapse" id="navbarNav">
