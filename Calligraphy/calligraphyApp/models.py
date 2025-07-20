@@ -91,6 +91,29 @@ class Course(models.Model):
     def get_free_videos(self):
         return Video.objects.filter(part__course=self, is_free=True)
     
+    def ensure_one_free_video(self):
+        """Ensure exactly one free video per course (first video of first part)"""
+        # First, mark all videos as not free
+        Video.objects.filter(part__course=self).update(is_free=False)
+        
+        # Find the first part (by order)
+        first_part = self.parts.order_by('order').first()
+        if first_part:
+            # Find the first video in the first part (by order)
+            first_video = first_part.videos.order_by('order').first()
+            if first_video:
+                first_video.is_free = True
+                first_video.save()
+                return first_video
+        return None
+    
+    def get_first_free_video(self):
+        """Get the first free video for this course"""
+        first_part = self.parts.order_by('order').first()
+        if first_part:
+            return first_part.videos.filter(is_free=True).order_by('order').first()
+        return None
+    
     def __str__(self):  
         return self.title  
 

@@ -9,7 +9,7 @@
 <section class="course-header">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-12">
                 <nav aria-label="breadcrumb" class="mb-3">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{% url 'calligraphyApp:home' %}">صفحه اصلی</a></li>
@@ -17,20 +17,40 @@
                         <li class="breadcrumb-item active" aria-current="page">{{ course.title }}</li>
                     </ol>
                 </nav>
-                <h1 class="course-title">{{ course.title }}</h1>
-                <div class="course-meta">
-                    <span class="course-meta-item">
-                        <i class="fas fa-calendar-alt"></i>
-                        آخرین بروزرسانی: {{ course.updated_at|date:"Y/m/d" }}
-                    </span>
-                    <span class="course-meta-item">
-                        <i class="fas fa-users"></i>
-                        {{ course.students_count }} هنرجو
-                    </span>
-                    <span class="course-meta-item">
-                        <i class="fas fa-layer-group"></i>
-                        {{ course.parts.count }} بخش
-                    </span>
+                
+                <div class="course-hero">
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <h1 class="course-title">{{ course.title }}</h1>
+                            <div class="course-meta-grid">
+                                <div class="meta-item">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>آخرین بروزرسانی: {{ course.updated_at|date:"Y/m/d" }}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-layer-group"></i>
+                                    <span>{{ course.parts.count }} بخش</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-video"></i>
+                                    <span>{{ total_videos }} ویدیو</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>{{ total_hours }} ساعت و {{ total_minutes }} دقیقه</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <div class="course-thumbnail-container">
+                                {% if course.thumbnail %}
+                                    <img src="{{ course.thumbnail.url }}" alt="{{ course.title }}" class="course-thumbnail">
+                                {% else %}
+                                    <img src="{% static 'images/default-course.svg' %}" alt="{{ course.title }}" class="course-thumbnail">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,35 +62,30 @@
         <!-- Course Information -->
         <div class="col-lg-8">
             <!-- Course Overview -->
-            <div class="content-box mb-4">
-                <div class="course-thumbnail mb-4">
-                    {% if course.thumbnail %}
-                        <img src="{{ course.thumbnail.url }}" alt="{{ course.title }}" class="img-fluid rounded">
-                    {% else %}
-                        <img src="{% static 'images/default-course.svg' %}" alt="{{ course.title }}" class="img-fluid rounded">
-                    {% endif %}
-                </div>
-                
-                <h3 class="content-title">توضیحات دوره</h3>
+            <div class="content-card mb-4">
+                <h3 class="content-title">
+                    <i class="fas fa-info-circle ms-2"></i>
+                    درباره این دوره
+                </h3>
                 <div class="course-description">
                     {{ course.description|linebreaks }}
                 </div>
-                    
-                    {% if not has_purchased %}
-                    <div class="course-alert">
-                        <div class="alert-icon">
-                            <i class="fas fa-info-circle"></i>
-                        </div>
-                        <div class="alert-content">
-                            <h5>دسترسی محدود</h5>
-                            <p>برای دسترسی به تمام ویدیوهای این دوره، لطفاً آن را خریداری کنید.</p>
-                        </div>
-                        </div>
-                    {% endif %}
+                
+                {% if not has_purchased %}
+                <div class="course-alert">
+                    <div class="alert-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="alert-content">
+                        <h5>ویدیو رایگان</h5>
+                        <p>شما می‌توانید یک ویدیو از این دوره را به صورت رایگان مشاهده کنید. برای دسترسی به تمام محتوا، دوره را خریداری کنید.</p>
+                    </div>
+                </div>
+                {% endif %}
             </div>
 
             <!-- Course Content -->
-            <div class="content-box">
+            <div class="content-card">
                 <h3 class="content-title">
                     <i class="fas fa-list-ul ms-2"></i>
                     محتوای دوره
@@ -78,58 +93,55 @@
                 
                 <div class="course-content">
                     {% for part in parts %}
-                        <div class="accordion-item mb-3">
-                            <h2 class="accordion-header" id="heading{{ part.id }}">
-                                <button class="accordion-button{% if forloop.counter > 1 %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ part.id }}" aria-expanded="{% if forloop.counter == 1 %}true{% else %}false{% endif %}" aria-controls="collapse{{ part.id }}">
-                                    <div class="d-flex justify-content-between w-100 pe-3">
-                                        <div class="d-flex align-items-center">
-                                            <span class="part-number">{{ forloop.counter }}</span>
-                                            <span class="part-title">{{ part.title }}</span>
-                                        </div>
-                                        <div class="d-flex align-items-center">
-                                            <span class="badge rounded-pill bg-primary-subtle text-primary me-2">{{ part.videos.count }} ویدیو</span>
-                                            <span class="part-toggle-icon">
-                                                <i class="fas fa-chevron-down"></i>
-                                            </span>
-                                        </div>
+                        <div class="course-part-card mb-3">
+                            <div class="part-header" data-bs-toggle="collapse" data-bs-target="#collapse{{ part.id }}" aria-expanded="{% if forloop.counter == 1 %}true{% else %}false{% endif %}">
+                                <div class="part-info">
+                                    <span class="part-number">{{ forloop.counter }}</span>
+                                    <div class="part-details">
+                                        <h4 class="part-title">{{ part.title }}</h4>
+                                        <span class="part-stats">{{ part.videos.count }} ویدیو</span>
                                     </div>
-                                </button>
-                            </h2>
-                            <div id="collapse{{ part.id }}" class="accordion-collapse collapse {% if forloop.counter == 1 %}show{% endif %}" aria-labelledby="heading{{ part.id }}">
-                                <div class="accordion-body p-0">
-                                    <div class="lesson-list">
-                                {% for video in part.videos.all %}
-                                            <div class="lesson-item {% if not video.is_free and not has_purchased %}locked{% endif %}">
-                                                <div class="lesson-left">
-                                                    <span class="lesson-number">{{ forloop.counter }}</span>
-                                                    <span class="lesson-icon">
-                                                        <i class="fas fa-play-circle"></i>
-                                                    </span>
-                                                    <div class="lesson-details">
-                                                        <span class="lesson-title">{{ video.title }}</span>
-                                                        {% if video.duration %}
-                                                            <span class="lesson-duration">{{ video.duration }}</span>
-                                                        {% endif %}
-                                                    </div>
+                                </div>
+                                <div class="part-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            
+                            <div id="collapse{{ part.id }}" class="part-content collapse {% if forloop.counter == 1 %}show{% endif %}">
+                                <div class="video-list">
+                                    {% for video in part.videos.all %}
+                                        <div class="video-item {% if not video.is_free and not has_purchased %}locked{% endif %}">
+                                            <div class="video-info">
+                                                <span class="video-number">{{ forloop.counter }}</span>
+                                                <div class="video-icon">
+                                                    {% if video.is_free or has_purchased %}
+                                                        <i class="fas fa-play-circle text-success"></i>
+                                                    {% else %}
+                                                        <i class="fas fa-lock text-muted"></i>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="video-details">
+                                                    <h5 class="video-title">{{ video.title }}</h5>
+                                                    {% if video.duration %}
+                                                        <span class="video-duration">{{ video.duration }}</span>
+                                                    {% endif %}
+                                                </div>
                                                 {% if video.is_free %}
-                                                        <span class="lesson-badge free">رایگان</span>
+                                                    <span class="free-badge">رایگان</span>
                                                 {% endif %}
                                             </div>
-                                                <div class="lesson-right">
+                                            <div class="video-actions">
                                                 {% if video.is_free or has_purchased %}
-                                                        <a href="{% url 'calligraphyApp:video_detail' course_id=video.part.course.id part_id=video.part.id video_id=video.id %}" class="btn btn-sm btn-outline-primary rounded-pill">
-                                                            <i class="fas fa-play me-1"></i>
+                                                    <a href="{% url 'calligraphyApp:video_detail' course_id=video.part.course.id part_id=video.part.id video_id=video.id %}" class="btn btn-primary btn-sm">
+                                                        <i class="fas fa-play me-1"></i>
                                                         مشاهده
                                                     </a>
                                                 {% else %}
-                                                        <span class="lesson-lock">
-                                                            <i class="fas fa-lock"></i>
-                                                        </span>
+                                                    <span class="locked-text">محدود</span>
                                                 {% endif %}
                                             </div>
                                         </div>
-                                        {% endfor %}
-                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -138,554 +150,563 @@
             </div>
         </div>
 
-        <!-- Purchase Card -->
+        <!-- Sidebar -->
         <div class="col-lg-4">
             <div class="course-sidebar">
                 <div class="price-card">
-                    <div class="price-value">
-                        <span class="price-amount">{{ course.price|format_price }}</span>
-                        <span class="price-currency">تومان</span>
-                </div>
-                    
-                    {% if has_purchased %}
-                        <div class="purchase-status">
-                            <i class="fas fa-check-circle"></i>
-                            شما این دوره را خریداری کرده‌اید
+                    <div class="price-header">
+                        <div class="price-value">
+                            <span class="price-amount">{{ course.price|format_price }}</span>
+                            <span class="price-currency">تومان</span>
                         </div>
-                    {% else %}
-                        {% if user.is_authenticated %}
-                            <a href="{% url 'calligraphyApp:add_to_cart' course.id %}" class="btn btn-primary btn-lg btn-block mb-3">
-                                <i class="fas fa-shopping-cart ms-2"></i>
-                                افزودن به سبد خرید
-                            </a>
-                        {% else %}
-                            <a href="{% url 'calligraphyApp:login' %}" class="btn btn-gold btn-lg btn-block mb-3">
-                                <i class="fas fa-sign-in-alt ms-2"></i>
-                                ورود برای خرید
-                            </a>
-                        {% endif %}
-                    {% endif %}
-
+                    </div>
+                    
                     <div class="course-features">
-                        <h4 class="features-title">این دوره شامل:</h4>
-                        <ul class="features-list">
-                            <li>
-                                <span class="feature-icon"><i class="fas fa-video"></i></span>
-                                <span class="feature-text">{{ parts|length }} بخش آموزشی</span>
-                            </li>
-                            <li>
-                                <span class="feature-icon"><i class="fas fa-infinity"></i></span>
-                                <span class="feature-text">دسترسی مادام‌العمر</span>
-                            </li>
-                            <li>
-                                <span class="feature-icon"><i class="fas fa-mobile-alt"></i></span>
-                                <span class="feature-text">قابل مشاهده در تمام دستگاه‌ها</span>
-                            </li>
-                            <li>
-                                <span class="feature-icon"><i class="fas fa-headset"></i></span>
-                                <span class="feature-text">پشتیبانی آنلاین</span>
-                            </li>
-                        </ul>
+                        <div class="feature-item">
+                            <i class="fas fa-infinity"></i>
+                            <span>دسترسی مادام‌العمر</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>قابل مشاهده در موبایل</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-certificate"></i>
+                            <span>گواهی تکمیل دوره</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-headset"></i>
+                            <span>پشتیبانی فنی</span>
+                        </div>
                     </div>
                     
-                    <div class="social-share">
-                        <span class="share-title">اشتراک‌گذاری:</span>
-                        <div class="share-buttons">
-                            <a href="#" class="share-button"><i class="fab fa-telegram"></i></a>
-                            <a href="#" class="share-button"><i class="fab fa-whatsapp"></i></a>
-                            <a href="#" class="share-button"><i class="fab fa-instagram"></i></a>
-                        </div>
+                    <div class="purchase-actions">
+                        {% if has_purchased %}
+                            <div class="purchase-status">
+                                <i class="fas fa-check-circle"></i>
+                                شما این دوره را خریداری کرده‌اید
+                            </div>
+                        {% else %}
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'calligraphyApp:add_to_cart' course.id %}" class="btn btn-primary btn-lg btn-block mb-3">
+                                    <i class="fas fa-shopping-cart ms-2"></i>
+                                    افزودن به سبد خرید
+                                </a>
+                                <div class="guarantee-note">
+                                    <i class="fas fa-shield-alt"></i>
+                                    ضمانت بازگشت وجه تا ۳۰ روز
+                                </div>
+                            {% else %}
+                                <a href="{% url 'calligraphyApp:login' %}" class="btn btn-gold btn-lg btn-block mb-3">
+                                    <i class="fas fa-sign-in-alt ms-2"></i>
+                                    ورود برای خرید
+                                </a>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
-                
-                <div class="teacher-card">
-                    <div class="teacher-profile">
-                        <img src="{% static 'images/default-avatar.svg' %}" alt="استاد دوره" class="teacher-avatar">
-                        <div class="teacher-info">
-                            <h4 class="teacher-name">حمید رضا توکلی</h4>
-                            <p class="teacher-title">استاد خوشنویسی</p>
+
+                <!-- Course Stats Card -->
+                <div class="stats-card">
+                    <h4 class="stats-title">آمار دوره</h4>
+                    <div class="stats-list">
+                        <div class="stat-item">
+                            <span class="stat-label">تعداد بخش‌ها</span>
+                            <span class="stat-value">{{ course.parts.count }}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">تعداد ویدیوها</span>
+                            <span class="stat-value">{{ total_videos }}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">مدت زمان کل</span>
+                            <span class="stat-value">{{ total_hours }}:{{ total_minutes|stringformat:"02d" }}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">ویدیوهای رایگان</span>
+                            <span class="stat-value">1</span>
                         </div>
                     </div>
-                    <p class="teacher-bio">استاد برجسته خوشنویسی با بیش از ۲۰ سال سابقه تدریس و اجرای هنر خوشنویسی ایرانی</p>
-                    <a href="{% url 'calligraphyApp:teacher_profile' %}" class="teacher-link">
-                        مشاهده پروفایل استاد
-                        <i class="fas fa-arrow-left ms-1"></i>
-                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
 
-{% block extra_css %}
 <style>
-    .course-header {
-        background-color: var(--light-bg);
-        padding: 3rem 0;
-        margin-bottom: 2.5rem;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .course-header::before {
-        content: "";
-        position: absolute;
-        top: -30%;
-        right: -20%;
-        width: 300px;
-        height: 300px;
-        background-image: url('{% static "images/ink-splash.svg" %}');
-        background-repeat: no-repeat;
-        background-size: contain;
-        opacity: 0.07;
-        transform: rotate(45deg);
-    }
-    
-    .breadcrumb {
-        background-color: transparent;
-        padding: 0;
-        margin-bottom: 1rem;
-    }
-    
-    .breadcrumb-item a {
-        color: var(--text-muted);
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-    
-    .breadcrumb-item a:hover {
-        color: var(--primary-color);
-    }
-    
-    .breadcrumb-item.active {
-        color: var(--text-color);
-    }
-    
-    .breadcrumb-item + .breadcrumb-item::before {
-        content: "/";
-        color: var(--text-muted);
-    }
-    
+.course-header {
+    background: linear-gradient(135deg, var(--light-bg) 0%, var(--paper-dark) 100%);
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+}
+
+.course-hero {
+    position: relative;
+    z-index: 10;
+}
+
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.breadcrumb-item a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--primary-color);
+}
+
+.breadcrumb-item.active {
+    color: var(--text-color);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "/";
+    color: var(--text-muted);
+}
+
+.course-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+}
+
+@media (min-width: 768px) {
     .course-title {
-        font-size: 2.2rem;
-        font-weight: 700;
-        color: var(--primary-color);
-        margin-bottom: 1rem;
+        font-size: 2.5rem;
+    }
+}
+
+.course-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+@media (max-width: 767px) {
+    .course-meta-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    gap: 0.5rem;
+}
+
+.meta-item i {
+    color: var(--accent-gold);
+    width: 16px;
+}
+
+.course-thumbnail-container {
+    margin-top: 1.5rem;
+}
+
+@media (min-width: 992px) {
+    .course-thumbnail-container {
+        margin-top: 0;
+    }
+}
+
+.course-thumbnail {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.content-card {
+    background: var(--paper-dark);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border-color);
+}
+
+.content-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.course-description {
+    color: var(--text-color);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.course-alert {
+    background: linear-gradient(135deg, rgba(212, 167, 70, 0.1), rgba(151, 90, 26, 0.05));
+    border: 1px solid var(--accent-gold);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.alert-icon {
+    color: var(--accent-gold);
+    font-size: 1.5rem;
+    margin-top: 0.25rem;
+}
+
+.alert-content h5 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.alert-content p {
+    color: var(--text-color);
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.course-part-card {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--form-bg);
+}
+
+.part-header {
+    background: var(--light-bg);
+    padding: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.part-header:hover {
+    background: var(--paper-dark);
+}
+
+.part-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.part-number {
+    background: var(--accent-gold);
+    color: var(--primary-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.part-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.part-stats {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.part-toggle {
+    color: var(--accent-color);
+    transition: transform 0.3s ease;
+}
+
+.part-header[aria-expanded="true"] .part-toggle {
+    transform: rotate(180deg);
+}
+
+.part-content {
+    border-top: 1px solid var(--border-color);
+}
+
+.video-list {
+    padding: 0;
+}
+
+.video-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s ease;
+}
+
+.video-item:last-child {
+    border-bottom: none;
+}
+
+.video-item:hover {
+    background: var(--paper-dark);
+}
+
+.video-item.locked {
+    opacity: 0.6;
+}
+
+.video-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.video-number {
+    background: var(--secondary-color);
+    color: var(--text-color);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.video-icon {
+    font-size: 1.2rem;
+}
+
+.video-details {
+    flex: 1;
+}
+
+.video-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    margin: 0 0 0.25rem 0;
+}
+
+.video-duration {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.free-badge {
+    background: var(--success-color);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.video-actions {
+    margin-right: 1rem;
+}
+
+.locked-text {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.course-sidebar {
+    position: sticky;
+    top: 2rem;
+}
+
+.price-card, .stats-card {
+    background: var(--paper-dark);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border-color);
+    margin-bottom: 1.5rem;
+}
+
+.price-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.price-value {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.price-amount {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.price-currency {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+}
+
+.course-features {
+    margin-bottom: 2rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.feature-item i {
+    color: var(--accent-gold);
+    width: 16px;
+}
+
+.purchase-status {
+    background: rgba(40, 167, 69, 0.1);
+    color: var(--success-color);
+    padding: 1rem;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.purchase-status i {
+    margin-left: 0.5rem;
+}
+
+.guarantee-note {
+    background: var(--light-bg);
+    padding: 0.75rem;
+    border-radius: 8px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    border: 1px solid var(--border-color);
+}
+
+.guarantee-note i {
+    color: var(--accent-gold);
+    margin-left: 0.5rem;
+}
+
+.stats-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.stat-value {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 767px) {
+    .course-header {
+        padding: 1.5rem 0;
     }
     
-    .course-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.5rem;
-    }
-    
-    .course-meta-item {
-        display: flex;
-        align-items: center;
-        color: var(--text-color);
-        font-size: 0.95rem;
-    }
-    
-    .course-meta-item i {
-        color: var(--accent-gold);
-        margin-left: 0.5rem;
-    }
-    
-    .content-box {
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    .content-card {
         padding: 1.5rem;
-        margin-bottom: 2rem;
     }
     
-    .content-title {
-        font-size: 1.4rem;
-        font-weight: 600;
-        color: var(--primary-color);
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-    }
-    
-    .content-title i {
-        color: var(--accent-gold);
-    }
-    
-    .course-thumbnail {
-        border-radius: 8px;
-        overflow: hidden;
-    }
-    
-    .course-thumbnail img {
-        width: 100%;
-        height: auto;
-        display: block;
-    }
-    
-    .course-description {
-        color: var(--text-color);
-        line-height: 1.7;
-    }
-    
-    .course-alert {
-        background-color: var(--light-bg);
-        border-radius: 8px;
-        padding: 1rem 1.5rem;
-        margin-top: 1.5rem;
-        display: flex;
-        align-items: center;
-    }
-    
-    .alert-icon {
-        color: var(--primary-color);
-        font-size: 1.5rem;
-        margin-left: 1rem;
-    }
-    
-    .alert-content h5 {
-        font-size: 1.1rem;
-        margin-bottom: 0.5rem;
-        color: var(--primary-color);
-    }
-    
-    .alert-content p {
-        margin: 0;
-        font-size: 0.95rem;
-    }
-    
-    /* Course Content Styles */
-    .accordion-item {
-        border: 1px solid var(--border-color);
-        border-radius: 10px !important;
-        overflow: hidden;
-        transition: all 0.3s ease;
-        margin-bottom: 1rem;
-        background-color: #fff;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-    }
-    
-    .accordion-item:hover {
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    }
-    
-    .accordion-header {
-        margin: 0;
-    }
-    
-    .accordion-button {
-        padding: 1.25rem 1.5rem;
-        font-weight: 600;
-        font-size: 1.1rem;
-        color: var(--text-color);
-        background-color: #fff;
-        border: none;
-        position: relative;
-    }
-    
-    .accordion-button:not(.collapsed) {
-        color: var(--primary-color);
-        background-color: #fff;
-        box-shadow: none;
-    }
-    
-    .accordion-button:focus {
-        box-shadow: none;
-        border-color: var(--border-color);
-    }
-    
-    .accordion-button::after {
-        display: none;
-    }
-    
-    .part-number {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        background-color: var(--primary-color);
-        color: white;
-        border-radius: 50%;
-        margin-left: 0.75rem;
-        font-size: 0.9rem;
-    }
-    
-    .part-title {
-        font-weight: 600;
-    }
-    
-    .part-toggle-icon {
-        color: var(--text-muted);
-        transition: transform 0.3s ease;
-    }
-    
-    .accordion-button:not(.collapsed) .part-toggle-icon {
-        transform: rotate(180deg);
-    }
-    
-    .lesson-list {
-        border-top: 1px solid var(--border-color);
-    }
-    
-    .lesson-item {
-        padding: 1rem 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: background-color 0.2s ease;
-    }
-    
-    .lesson-item:hover {
-        background-color: rgba(var(--primary-rgb), 0.03);
-    }
-    
-    .lesson-item.locked {
-        background-color: rgba(0, 0, 0, 0.02);
-    }
-    
-    .lesson-item:last-child {
-        border-bottom: none;
-    }
-    
-    .lesson-left {
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-        flex: 1;
-    }
-    
-    .lesson-number {
-        font-size: 0.875rem;
-        color: var(--text-muted);
-        min-width: 20px;
-    }
-    
-    .lesson-icon {
-        color: var(--primary-color);
-        font-size: 1.1rem;
-    }
-    
-    .lesson-details {
-        display: flex;
+    .video-item {
         flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
     }
     
-    .lesson-title {
-        font-weight: 500;
-        color: var(--text-color);
+    .video-info {
+        width: 100%;
     }
     
-    .lesson-item.locked .lesson-title {
-        color: var(--text-muted);
-    }
-    
-    .lesson-duration {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        margin-top: 0.2rem;
-    }
-    
-    .lesson-badge {
-        font-size: 0.75rem;
-        padding: 0.25rem 0.5rem;
-        border-radius: 30px;
-        margin-right: 0.5rem;
-    }
-    
-    .lesson-badge.free {
-        background-color: var(--accent-gold);
-        color: #fff;
-    }
-    
-    .lesson-lock {
-        color: var(--text-muted);
-        font-size: 1.1rem;
-        background-color: rgba(0, 0, 0, 0.05);
-        width: 34px;
-        height: 34px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
+    .video-actions {
+        margin-right: 0;
+        align-self: flex-end;
     }
     
     .course-sidebar {
-        position: sticky;
-        top: 20px;
+        position: static;
+        margin-top: 2rem;
     }
     
-    .price-card {
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    .price-card, .stats-card {
         padding: 1.5rem;
-        margin-bottom: 1.5rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .course-title {
+        font-size: 1.8rem;
     }
     
-    .price-value {
-        text-align: center;
-        margin-bottom: 1.5rem;
+    .part-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
     }
     
-    .price-amount {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: var(--primary-color);
-    }
-    
-    .price-currency {
+    .part-number {
+        width: 32px;
+        height: 32px;
         font-size: 1rem;
-        color: var(--text-muted);
-        margin-right: 0.5rem;
     }
     
-    .purchase-status {
-        background-color: var(--light-bg);
-        color: var(--success-color);
-        padding: 1rem;
-        border-radius: 8px;
-        text-align: center;
-        margin-bottom: 1.5rem;
-        font-weight: 500;
+    .video-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
     }
-    
-    .purchase-status i {
-        margin-left: 0.5rem;
-    }
-    
-    .btn-block {
-        display: block;
-        width: 100%;
-    }
-    
-    .course-features {
-        margin-top: 1.5rem;
-    }
-    
-    .features-title {
-        font-size: 1.1rem;
-        color: var(--text-color);
-        margin-bottom: 1rem;
-    }
-    
-    .features-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    
-    .features-list li {
-        display: flex;
-        align-items: center;
-        margin-bottom: 0.8rem;
-    }
-    
-    .features-list li:last-child {
-        margin-bottom: 0;
-    }
-    
-    .feature-icon {
-        width: 30px;
-        color: var(--accent-gold);
-    }
-    
-    .social-share {
-        margin-top: 1.5rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid var(--border-color);
-        text-align: center;
-    }
-    
-    .share-title {
-        display: block;
-        margin-bottom: 0.8rem;
-        color: var(--text-muted);
-    }
-    
-    .share-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 0.8rem;
-    }
-    
-    .share-button {
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--light-bg);
-        color: var(--text-color);
-        border-radius: 50%;
-        transition: all 0.3s ease;
-    }
-    
-    .share-button:hover {
-        background-color: var(--primary-color);
-        color: white;
-    }
-    
-    .teacher-card {
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
-        padding: 1.5rem;
-    }
-    
-    .teacher-profile {
-        display: flex;
-        align-items: center;
-        margin-bottom: 1rem;
-    }
-    
-    .teacher-avatar {
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 3px solid var(--light-bg);
-        margin-left: 1rem;
-    }
-    
-    .teacher-name {
-        font-size: 1.1rem;
-        margin-bottom: 0.3rem;
-        color: var(--primary-color);
-    }
-    
-    .teacher-title {
-        font-size: 0.9rem;
-        color: var(--text-muted);
-        margin: 0;
-    }
-    
-    .teacher-bio {
-        color: var(--text-color);
-        font-size: 0.95rem;
-        margin-bottom: 1rem;
-    }
-    
-    .teacher-link {
-        display: block;
-        text-align: left;
-        color: var(--primary-color);
-        text-decoration: none;
-    }
-    
-    .teacher-link:hover {
-        color: var(--primary-dark);
-    }
-    
-    /* Responsive fixes */
-    @media (max-width: 991px) {
-        .course-sidebar {
-            position: static;
-            margin-top: 2rem;
-        }
-    }
+}
 </style>
 {% endblock %}
 

@@ -196,15 +196,21 @@ def course_list(request):
     # Prepare course data with free video information
     courses_data = []
     for course in courses:
-        free_videos_count = sum(
-            1 for part in course.parts.all()
-            for video in part.videos.all()
-            if video.is_free
-        )
+        # Ensure exactly one free video per course
+        course.ensure_one_free_video()
+        
+        # Count free videos (should be 1 after ensure_one_free_video)
+        free_videos_count = course.get_free_videos().count()
+        
+        # Get course statistics
+        parts_count = course.parts.count()
+        videos_count = sum(part.videos.count() for part in course.parts.all())
         
         courses_data.append({
             'course': course,
             'free_videos_count': free_videos_count,
+            'parts_count': parts_count,
+            'videos_count': videos_count,
         })
     
     return render(request, 'calligraphyApp/course_list.html', {
@@ -212,7 +218,6 @@ def course_list(request):
         'user_authenticated': request.user.is_authenticated
     })
 
-@login_required
 def course_detail(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     is_enrolled = False
@@ -222,26 +227,31 @@ def course_detail(request, course_id):
         is_enrolled = CourseEnrollment.objects.filter(user=request.user, course=course).exists()
         has_purchased = CourseEnrollment.objects.filter(user=request.user, course=course, is_paid=True).exists()
     
+    # Ensure exactly one free video per course
+    course.ensure_one_free_video()
+    
     # Get all parts with their videos
     parts = course.parts.prefetch_related('videos').all()
     
-    # For each part, mark first two videos as free if they're in part 1 or 2
-    for part in parts:
-        if part.order <= 2:  # Only for first two parts
-            videos = list(part.videos.all())
-            if len(videos) >= 1:
-                videos[0].is_free = True
-                videos[0].save()
-            if len(videos) >= 2:
-                videos[1].is_free = True
-                videos[1].save()
+    # Get course statistics
+    total_videos = sum(part.videos.count() for part in parts)
+    total_duration = sum(
+        (video.duration.total_seconds() if video.duration else 300)
+        for part in parts
+        for video in part.videos.all()
+    )
+    hours = int(total_duration // 3600)
+    minutes = int((total_duration % 3600) // 60)
     
     context = {
         'course': course,
         'parts': parts,
         'is_enrolled': is_enrolled,
         'has_purchased': has_purchased,
-        'user_authenticated': request.user.is_authenticated
+        'user_authenticated': request.user.is_authenticated,
+        'total_videos': total_videos,
+        'total_hours': hours,
+        'total_minutes': minutes,
     }
     return render(request, 'calligraphyApp/course_detail.html', context)
 
