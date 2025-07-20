@@ -33,53 +33,7 @@
     </div>
 </section>
 
-<!-- Course Stats Section -->
-<section class="container">
-    <div class="stats-overview">
-        <div class="row">
-            <div class="col-6 col-md-3 text-center">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <div class="stat-number">{{ courses_data|length }}</div>
-                    <div class="stat-label">دوره آموزشی</div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 text-center">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-video"></i>
-                    </div>
-                    <div class="stat-number">
-                        {% for course_data in courses_data %}
-                            {% if forloop.first %}{{ course_data.videos_count }}{% else %}+{% endif %}
-                        {% endfor %}
-                    </div>
-                    <div class="stat-label">ویدیو آموزشی</div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 text-center">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-gift"></i>
-                    </div>
-                    <div class="stat-number">{{ courses_data|length }}</div>
-                    <div class="stat-label">ویدیو رایگان</div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 text-center">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="stat-number">1000+</div>
-                    <div class="stat-label">دانشجو</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 <!-- Filters Section -->
 <section class="container">
